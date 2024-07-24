@@ -15,5 +15,16 @@ The database models all relevant information about a tourist attraction, such as
 
 ### Backend
 
-Insert SQL 
+Insert SQL commands in script with DDL statements for DROP, INSERT and other statements
+
+REST APIs endpoint creation:
+INSERT (adding new records)
+DELETE (deleting records)
+UPDATE (updating records)
+Selection ( Retrieve records with specific criteria)
+Selecting specific columns as asked by user
+Join (combining data)
+
+Perhaps also add for group bys and divisions
+
 
