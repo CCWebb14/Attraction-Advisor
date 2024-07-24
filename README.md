@@ -12,6 +12,12 @@ The database models all relevant information about a tourist attraction, such as
 
 ### Frontend
 
+- displaying photos 
+- search based on filters of location and/or by name from dropdown
+- table displaying bookings
+- adding comments for each location
+- adding new attractions
+- allowing user to add experiences in a bo
 
 ### Backend
 
