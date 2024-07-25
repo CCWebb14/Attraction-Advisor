@@ -11,22 +11,28 @@ The database models all relevant information about a tourist attraction, such as
 - Milestone 5 (Due Aug 9)
 
 
-1. Create Frontend and Backend Templates
+1. Create Frontend and Backend Templates 
+- Assigned to: Dennis, Waris, Cooper
 - Deadline July 27
 
 2. Setup Database and Populate
+- Assigned to: Waris
 - Deadline July 28
 
 3. Create Displaying Panels (Menu, Image Display, Review Display)
+- Assigned to: Cooper & Dennis
 - Deadline July 29
 
 4. Create CRUD Panels (Add attraction)
+- Assigned to: Cooper & Dennis
 - Deadline July 29
 
 5. Implement functions/queries for CRUD Operations
+- Assigned to: Dennis, Waris, Cooper
 - Deadline August 1
 
 6. Connect Backend to FrontEnd 
+- Dennis, Waris, Cooper
 - Deadline August 3
 
 
