@@ -32,7 +32,7 @@ The database models all relevant information about a tourist attraction, such as
 - Deadline August 1
 
 6. Connect Backend to FrontEnd 
-- Dennis, Waris, Cooper
+- Assigned to: Dennis, Waris, Cooper
 - Deadline August 3
 
 
