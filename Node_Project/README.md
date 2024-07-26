@@ -16,5 +16,15 @@ ORACLE_DBNAME=stu
 Run the following command in the command line
 
 ```
-./remote-start.sh
+sh ./remote-start.sh
 ```
+
+## Stopping the service
+
+Ctrl + C within the console will terminate the express server and close the connection pool.
+
+## Accessing the webpage
+
+The console will notify you which port the webpage is hosted on.
+Default: 50001
+[localhost:50001](http://localhost:50001/)
