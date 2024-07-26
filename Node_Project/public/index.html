@@ -7,6 +7,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        .resultstable {
+            max-height: 200px; 
+            overflow-y: auto;
+            overflow-x: auto; 
+            border: 1px solid #dee2e6;
+        }
+        thead th {
+            position:sticky;
+            top:0;
+        }
+    </style>
 
 
     <!-- Link to the external CSS stylesheet. Uncomment if you wish to customize or add styling. -->
@@ -23,38 +35,112 @@
     <!-- Display the current status of the database connection. 
          !!HERE TO HELP U DEBUGGING, NOT REQUIRED IN YOUR OWN PROJECT!!
          -->
-    <h1>Database Connection Status:
+    <!-- <h1>Database Connection Status: -->
         <!-- An in-line placeholder to display connection status. -->
-        <span id="dbStatus"> </span>
+        <!-- <span id="dbStatus"> </span> -->
         <!-- A loading GIF, will be hided once get the status. -->
-        <img id="loadingGif" class="loading-gif" src="loading_100px.gif" alt="Loading...">
-    </h1>
+        <!-- <img id="loadingGif" class="loading-gif" src="loading_100px.gif" alt="Loading..."> -->
+    <!-- </h1> -->
+
+    <!-- <br>
+    <hr><br> ========================================================================= -->
+
+    <h1 class="text-primary text-center mt-5">Welcome to Attraction Advisor</h1>
+
+    <p class="text-center mt-3">
+        Add, Review, and Reserve Any Attraction Across Canada!
+    </p>
+
+
+    <!-- Landing page: Used to filter for area-->
+        <h2 class="mb-4">Find Attractions Near Me</h2>
+
+        <div class="provincedropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            Select Province
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" data-value="AB">Alberta</a></li>
+                <li><a class="dropdown-item" data-value="BC">British Columbia</a></li>
+                <li><a class="dropdown-item" data-value="MB">Manitoba</a></li>
+                <li><a class="dropdown-item" data-value="NB">New Brunswick</a></li>
+                <li><a class="dropdown-item" data-value="NL">Newfoundland and Labrador</a></li>
+                <li><a class="dropdown-item" data-value="NS">Nova Scotia</a></li>
+                <li><a class="dropdown-item" data-value="NT">Northwest Territories</a></li>
+                <li><a class="dropdown-item" data-value="NU">Nunavut</a></li>
+                <li><a class="dropdown-item" data-value="ON">Ontario</a></li>
+                <li><a class="dropdown-item" data-value="PE">Prince Edward Island</a></li>
+                <li><a class="dropdown-item" data-value="QC">Quebec</a></li>
+                <li><a class="dropdown-item" data-value="SK">Saskatchewan</a></li>
+                <li><a class="dropdown-item" data-value="YT">Yukon</a></li>
+            </ul>
+        </div>
+
+        <div class="mb-3">
+            <input type="text"  class="form-control w-50 form-control-sm small-textbox" id="cityInput" placeholder="Enter City Name">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Find Attractions Now!</button>
 
     <br>
     <hr><br> <!-- ========================================================================= -->
 
-    <!-- Show 'Demotable'. 
-        Data will be fetched and inserted here dynamically using JavaScript. -->
-    <h2>Show Demotable</h2>
-    <table id="demotable" border="1">
-        <thead>
-            <tr>
-                <!--Table head, need to be adjusted accordingly to align with your own.-->
-                <th>ID</th>
-                <th>Name</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+    <h2>Results</h2>
+    <p>Click on a row to see more details!</p>
+    <div class="resultstable">
+        <table class="table table-bordered table-hover table-sm">
+            <thead class="table-dark">
+                <tr>
+                    <th>Attraction Name</th>
+                    <th>Attraction ID</th>
+                    <th>Star Rating</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Great Wall of China</td>
+                    <td>001</td>
+                    <td>5</td>
+                </tr>
+                <tr>
+                    <td>Great Wall of China</td>
+                    <td>001</td>
+                    <td>5</td>
+                </tr>
+                <tr>
+                    <td>Great Wall of China</td>
+                    <td>001</td>
+                    <td>5</td>
+                </tr>
+                <tr>
+                    <td>Great Wall of China</td>
+                    <td>001</td>
+                    <td>5</td>
+                </tr>
+                <tr>
+                    <td>Great Wall of China</td>
+                    <td>001</td>
+                    <td>5</td>
+                </tr>
+                <tr>
+                    <td>Great Wall of China</td>
+                    <td>001</td>
+                    <td>5</td>
+                </tr>
+                <tr>
+                    <td>Great Wall of China</td>
+                    <td>001</td>
+                    <td>5</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-    <br>
-    <hr><br> <!-- ========================================================================= -->
+    <button id="resetDemotable"> Reset data</button> <br>
+    <button id="addnewattraction"> </button>
 
-    <h2>Reset Demotable</h2>
-    <p>If you wish to reset the table press on the reset button. If this is the first time you're running this page, you
-        MUST use reset</p>
-    <button id="resetDemotable"> reset </button> <br>
+
+
     <!-- A placeholder to display messages related to the reset operation. -->
     <div id="resetResultMsg"></div>
 
