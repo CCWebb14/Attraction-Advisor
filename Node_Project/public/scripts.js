@@ -21,31 +21,33 @@ async function checkDbConnection() {
     });
 }
 
-
 //Purpose: retrieves values from html file, triggers get method, then triggers display method
 async function findAndDisplayAttractions() {
-    const inputprovince = document.getElementById('provinceInput').value
-    const inputcity = document.getElementById('cityInput').value
+    const inputProvince = document.getElementById('provinceInput').value
+    const inputCity = document.getElementById('cityInput').value
 
-    console.log(inputcity); // testing
-    console.log(inputprovince); //testing
+    console.log(inputCity); // testing
+    console.log(inputProvince); //testing
     
-    if (!inputprovince || !inputcity) {
+    if (!inputProvince || !inputCity) {
         alert("enter province or city");
         return;
     } 
 
     try {
-        const attractions = await getAttractions(inputprovince, inputcity);
+        const attractions = await getAttractions(inputProvince, inputCity);
         displayAttractionsOnTable(attractions);
     } catch (error) {
         alert("problem retrieving info");
     }
 }
 
+//Inputs required: province and city
 //Purpose: Performs a GET request and returns parsed JSON for diplsaying on main page.Throws error for try-catch if not found
-async function getAttractions(inputprovince, inputcity) {
+//NOTE: response JSON should only contain attraction Name, ID, and Star Rating
+async function getAttractions(inputProvince, inputCity) {
 
+    // ON THE BACKEND ONLY RETURN NAME, ID, STAR RATING!
     const response = await fetch();
 
     if (!response) {
@@ -56,32 +58,32 @@ async function getAttractions(inputprovince, inputcity) {
     return parsedValue;
 }
 
+//Inputs required: attractions in form of JSON
+//Purpose: Displays JSON data in the main page by adding each object into a row
+async function displayAttractionsOnTable() {
+    const attractionTable = document.getElementById('attractionresultstable');
+    const tableBody = attractionTable.querySelector('tbody');
 
-// Fetches data from the demotable and displays it.
-// async function fetchAndDisplayUsers() {
-//     const tableElement = document.getElementById('demotable');
-//     const tableBody = tableElement.querySelector('tbody');
+    //clear before displaying
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
 
-//     const response = await fetch('/demotable', {
-//         method: 'GET'
-//     });
+    attractions.forEach(attraction => {
 
-//     const responseData = await response.json();
-//     const demotableContent = responseData.data;
+        //create row
+        const newRow = tableBody.insertRow();
 
-//     // Always clear old, already fetched data before new fetching process.
-//     if (tableBody) {
-//         tableBody.innerHTML = '';
-//     }
+        const nameCell = newRow.insertCell(0);
+        nameCell.textContent = attraction.name; // NOTE THIS IS JUST A PLACEHOLDER, CHANGE LATER OTHERWISE THERE WILL BE BUGS
 
-//     demotableContent.forEach(user => {
-//         const row = tableBody.insertRow();
-//         user.forEach((field, index) => {
-//             const cell = row.insertCell(index);
-//             cell.textContent = field;
-//         });
-//     });
-// }
+        const idCell = newRow.insertCell(1);
+        idCell.textContent = attraction.id;  // NOTE THIS IS JUST A PLACEHOLDER, CHANGE LATER OTHERWISE THERE WILL BE BUGS
+
+        const ratingCell = newRow.insertCell(2);
+        ratingCell.textContent = attraction.rating; // NOTE THIS IS JUST A PLACEHOLDER, CHANGE LATER OTHERWISE THERE WILL BE BUGS
+    })
+}
 
 // This function resets or initializes the demotable.
 async function resetDemotable() {
