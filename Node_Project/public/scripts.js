@@ -1,18 +1,3 @@
-/*
- * These functions below are for various webpage functionalities. 
- * Each function serves to process data on the frontend:
- *      - Before sending requests to the backend.
- *      - After receiving responses from the backend.
- * 
- * To tailor them to your specific needs,
- * adjust or expand these functions to match both your 
- *   backend endpoints 
- * and 
- *   HTML structure.
- * 
- */
-
-
 // This function checks the database connection and updates its status on the frontend.
 async function checkDbConnection() {
     const statusElem = document.getElementById('dbStatus');
@@ -36,31 +21,67 @@ async function checkDbConnection() {
     });
 }
 
-// Fetches data from the demotable and displays it.
-async function fetchAndDisplayUsers() {
-    const tableElement = document.getElementById('demotable');
-    const tableBody = tableElement.querySelector('tbody');
 
-    const response = await fetch('/demotable', {
-        method: 'GET'
-    });
+//Purpose: retrieves values from html file, triggers get method, then triggers display method
+async function findAndDisplayAttractions() {
+    const inputprovince = document.getElementById('provinceInput').value
+    const inputcity = document.getElementById('cityInput').value
 
-    const responseData = await response.json();
-    const demotableContent = responseData.data;
+    console.log(inputcity); // testing
+    console.log(inputprovince); //testing
+    
+    if (!inputprovince || !inputcity) {
+        alert("enter province or city");
+        return;
+    } 
 
-    // Always clear old, already fetched data before new fetching process.
-    if (tableBody) {
-        tableBody.innerHTML = '';
+    try {
+        const attractions = await getAttractions(inputprovince, inputcity);
+        displayAttractionsOnTable(attractions);
+    } catch (error) {
+        alert("problem retrieving info");
+    }
+}
+
+//Purpose: Performs a GET request and returns parsed JSON for diplsaying on main page.Throws error for try-catch if not found
+async function getAttractions(inputprovince, inputcity) {
+
+    const response = await fetch();
+
+    if (!response) {
+        throw new Error("No response from backend")
     }
 
-    demotableContent.forEach(user => {
-        const row = tableBody.insertRow();
-        user.forEach((field, index) => {
-            const cell = row.insertCell(index);
-            cell.textContent = field;
-        });
-    });
+    const parsedValue = await response.json();
+    return parsedValue;
 }
+
+
+// Fetches data from the demotable and displays it.
+// async function fetchAndDisplayUsers() {
+//     const tableElement = document.getElementById('demotable');
+//     const tableBody = tableElement.querySelector('tbody');
+
+//     const response = await fetch('/demotable', {
+//         method: 'GET'
+//     });
+
+//     const responseData = await response.json();
+//     const demotableContent = responseData.data;
+
+//     // Always clear old, already fetched data before new fetching process.
+//     if (tableBody) {
+//         tableBody.innerHTML = '';
+//     }
+
+//     demotableContent.forEach(user => {
+//         const row = tableBody.insertRow();
+//         user.forEach((field, index) => {
+//             const cell = row.insertCell(index);
+//             cell.textContent = field;
+//         });
+//     });
+// }
 
 // This function resets or initializes the demotable.
 async function resetDemotable() {

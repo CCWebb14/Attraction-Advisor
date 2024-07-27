@@ -55,32 +55,15 @@
     <!-- Landing page: Used to filter for area-->
         <h2 class="mb-4">Find Attractions Near Me</h2>
 
-        <div class="provincedropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-            Select Province
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" data-value="AB">Alberta</a></li>
-                <li><a class="dropdown-item" data-value="BC">British Columbia</a></li>
-                <li><a class="dropdown-item" data-value="MB">Manitoba</a></li>
-                <li><a class="dropdown-item" data-value="NB">New Brunswick</a></li>
-                <li><a class="dropdown-item" data-value="NL">Newfoundland and Labrador</a></li>
-                <li><a class="dropdown-item" data-value="NS">Nova Scotia</a></li>
-                <li><a class="dropdown-item" data-value="NT">Northwest Territories</a></li>
-                <li><a class="dropdown-item" data-value="NU">Nunavut</a></li>
-                <li><a class="dropdown-item" data-value="ON">Ontario</a></li>
-                <li><a class="dropdown-item" data-value="PE">Prince Edward Island</a></li>
-                <li><a class="dropdown-item" data-value="QC">Quebec</a></li>
-                <li><a class="dropdown-item" data-value="SK">Saskatchewan</a></li>
-                <li><a class="dropdown-item" data-value="YT">Yukon</a></li>
-            </ul>
+        <div class="mb-3">
+            <input type="text"  class="form-control w-50 form-control-sm small-textbox" id="provinceInput" placeholder="Enter Province alpha code (2 letters)">
         </div>
 
         <div class="mb-3">
             <input type="text"  class="form-control w-50 form-control-sm small-textbox" id="cityInput" placeholder="Enter City Name">
         </div>
 
-        <button type="submit" class="btn btn-primary">Find Attractions Now!</button>
+        <button type="submit" class="btn btn-primary" onclick="findAndDisplayAttractions()">Find Attractions Now!</button>
 
     <br>
     <hr><br> <!-- ========================================================================= -->
@@ -149,12 +132,12 @@
 
     <h2> Add New Attraction </h2>
     <form id="insertattractiontable">
-        Name: <input type="text" id="insertName" placeholder="Enter Name" maxlength="20"> <br><br>
+        Name: <input type="text" id="insertName" placeholder="Enter Name" maxlength="20" required> <br><br>
         Latitude: <input type="number" id="insertLat" placeholder="Enter Latitude" required> <br><br>
         Longitude: <input type="number" id="insertLon" placeholder="Enter Longitude" required> <br><br>
-        Opening Hour: <input type="text" id="insertOpen" placeholder="Enter Opening Hour" maxlength="20"> <br><br>
-        Closing Hour: <input type="text" id="insertClose" placeholder="Enter Closing Hour" maxlength="20"> <br><br>
-        Description:  <input type="text" id="insertDescription" placeholder="Enter Brief Description" maxlength="20"> <br><br>
+        Opening Hour: <input type="text" id="insertOpen" placeholder="Enter Opening Hour" maxlength="20" required> <br><br>
+        Closing Hour: <input type="text" id="insertClose" placeholder="Enter Closing Hour" maxlength="20" required> <br><br>
+        Description:  <input type="text" id="insertDescription" placeholder="Enter Brief Description" maxlength="20" required> <br><br>
         Category: 
         <select id="chooseCat">
             <option value="">Select a Category</option>
