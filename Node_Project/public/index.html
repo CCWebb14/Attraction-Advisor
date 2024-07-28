@@ -85,14 +85,37 @@
     </div>
 
     <button id="resetDemotable" onclick="repopulatedata()"> Repopulate data</button> <br>
-    <button id="addnewattraction"> ADD HREF HERE TO ADD SECTION </button>
-
-
+    <button id="countResults" onclick="countAttractions()"> Count attractions</button>
 
     <!-- A placeholder to display messages related to the reset operation. -->
     <div id="resetResultMsg"></div>
 
     <br>
+    <hr><br> <!-- ========================================================================= -->
+    <h2> Update Attraciton</h2>
+
+    <form id="updateattractiontable">
+        ID: <input type="text" id="idModify" placeholder="Enter ID to Modify" maxlength="20" required> <br><br>
+        NewName: <input type="text" id="newinsertName" placeholder="Enter New Name" maxlength="20" required> <br><br>
+        NewLatitude: <input type="number" id="newinsertLat" placeholder="Enter New Latitude" required> <br><br>
+        NewLongitude: <input type="number" id="newinsertLon" placeholder="Enter New Longitude" required> <br><br>
+        NewOpening Hour: <input type="text" id="newinsertOpen" placeholder="Enter New Opening Hour" maxlength="20" required> <br><br>
+        NewClosing Hour: <input type="text" id="newinsertClose" placeholder="Enter New Closing Hour" maxlength="20" required> <br><br>
+        NewDescription:  <input type="text" id="newinsertDescription" placeholder="Enter New Brief Description" maxlength="20" required> <br><br>
+        NewCategory:
+        <select id="newchooseCat">
+            <option value="">Select a Category</option>
+            <option value="Museum">Museum</option>
+            <option value="Park">Park</option>
+            <option value="Historical Site">Historical Site</option>
+            <option value="Restaurant">Restaurant</option>
+            <option value="Theater">Theater</option>
+            <option value="Other">Other</option>
+        </select>
+    </form>
+    <button id="updateAttraction" onclick="updateAttraction()"> Update attraction</button>
+
+
     <hr><br> <!-- ========================================================================= -->
 
     <h2> Add New Attraction </h2>

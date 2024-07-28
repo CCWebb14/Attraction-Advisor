@@ -37,6 +37,7 @@ async function findAndDisplayAttractions() {
     try {
         const attractions = await getAttractions(inputProvince, inputCity);
         displayAttractionsOnTable(attractions);
+        alert("Filtered data retrieved");
     } catch (error) {
         alert("problem retrieving info");
     }
@@ -123,6 +124,7 @@ async function addNewAttractionSubmit() {
 
     try {
         addAttraction(attractionJson);
+        alert("New attraction added!");
     } catch (error) {
         alert('failed to insert data');
     }
@@ -161,10 +163,64 @@ async function repopulatedata() {
     }
     const responseJson = await response.json();
     displayAttractionsOnTable(responseJson); //HELPER FUNCTION ALREADY DEFINED
+    alert("Data repopulated!");
 }
 
+//Purpose: Counts number of tuples
+async function countAttractions() {
+    const response = fetch("XYZ");
 
+    if (!response.ok) {
+        alert("Count not completed");
+    }
 
+    const responseData = response.json();
+
+    alert(`Theres currently ${responseData} number of attractions`);
+}
+
+//Purpose: Handles update button press
+async function updateAttractionAction() {
+    const activityId = document.getElementById('idModify').value;
+    const newname = document.getElementById('newinsertName').value;
+    const newlat = document.getElementById('newinsertLat').value;
+    const newlong = document.getElementById('newinsertLon').value;
+    const newopen = document.getElementById('newinsertOpen').value;
+    const newclose = document.getElementById('newinsertClose').value;
+    const newdescription = document.getElementById('newinsertDescription').value;
+    const newcategory = document.getElementById('newchooseCat').value;    
+
+    
+    // TODO: ensure that these json values are good
+    const attractionJson = {
+        id : activityId,
+        newname : newname,
+        newlat : newlat,
+        newlong : newlong,
+        newopen : newopen,
+        newclose : newclose,
+        newdescription : newdescription,
+        newcategory : newcategory
+    }
+
+    try {
+        updateDbAttraction(attractionJson);
+        alert('Attraction info successfully updated');
+    } catch (error) {
+        alert('Attraction failed to update')
+    }
+}
+
+//Purpose: Executes PUT request to backend to update
+// TODO: COMPLETE THIS METHOD
+async function updateDbAttraction(attractionJson) {
+    const response = await fetch("XYZ", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    })
+}
 
 
 // This function resets or initializes the demotable.
