@@ -61,7 +61,7 @@ async function getAttractions(inputProvince, inputCity) {
 
 //Inputs required: attractions in form of JSON
 //Purpose: Displays JSON data in the main page by adding each object into a row
-async function displayAttractionsOnTable() {
+async function displayAttractionsOnTable(attractions) {
     const attractionTable = document.getElementById('attractionresultstable');
     const tableBody = attractionTable.querySelector('tbody');
 
@@ -96,6 +96,10 @@ async function addNewAttractionSubmit() {
     const description = document.getElementById('insertDescription').value;
     const category = document.getElementById('chooseCat').value;    
 
+    //is this good for id gen?
+    const uniqueInt = Math.floor(Math.random() * 10000);
+    const activityId = `${name}_${lat}_${long}_${uniqueInt}`;
+
     //testing
     console.log(name);
     console.log(lat);
@@ -105,6 +109,7 @@ async function addNewAttractionSubmit() {
     console.log(description);
     console.log(category);
 
+    // TODO: ensure that these json values are good
     const attractionJson = {
         name : name,
         lat : lat,
@@ -112,7 +117,8 @@ async function addNewAttractionSubmit() {
         open : open,
         close : close,
         description : description,
-        category : category
+        category : category,
+        id : activityId
     }
 
     try {
@@ -141,6 +147,24 @@ async function addAttraction(attraction) {
 
     console.log("add successful"); // debugging purposes
 }
+
+
+//Purpose: Fetch,Repopulate, and display table with .sql file data
+async function repopulatedata() {
+
+    //TODO: add path to route for default data
+    const response = await fetch("XYZ");
+
+    if (!response.ok) {
+        alert("Repopulation not completed properly");
+        return;
+    }
+    const responseJson = await response.json();
+    displayAttractionsOnTable(responseJson); //HELPER FUNCTION ALREADY DEFINED
+}
+
+
+
 
 
 // This function resets or initializes the demotable.
