@@ -23,8 +23,8 @@ async function checkDbConnection() {
 
 //Purpose: retrieves values from html file, triggers get method, then triggers display method
 async function findAndDisplayAttractions() {
-    const inputProvince = document.getElementById('provinceInput').value
-    const inputCity = document.getElementById('cityInput').value
+    const inputProvince = document.getElementById('provinceInput').value;
+    const inputCity = document.getElementById('cityInput').value;
 
     console.log(inputCity); // testing
     console.log(inputProvince); //testing
@@ -48,10 +48,11 @@ async function findAndDisplayAttractions() {
 async function getAttractions(inputProvince, inputCity) {
 
     // ON THE BACKEND ONLY RETURN NAME, ID, STAR RATING!
-    const response = await fetch();
+    const url = "XYZYYYXYXYZYXYZXYXZ" // TODO: change url
+    const response = await fetch(url);
 
-    if (!response) {
-        throw new Error("No response from backend")
+    if (!response.ok) {
+        throw new Error();
     }
 
     const parsedValue = await response.json();
@@ -75,60 +76,117 @@ async function displayAttractionsOnTable() {
         const newRow = tableBody.insertRow();
 
         const nameCell = newRow.insertCell(0);
-        nameCell.textContent = attraction.name; // NOTE THIS IS JUST A PLACEHOLDER, CHANGE LATER OTHERWISE THERE WILL BE BUGS
+        nameCell.textContent = attraction.name; // TODO: NOTE THIS IS JUST A PLACEHOLDER, CHANGE LATER OTHERWISE THERE WILL BE BUGS
 
         const idCell = newRow.insertCell(1);
-        idCell.textContent = attraction.id;  // NOTE THIS IS JUST A PLACEHOLDER, CHANGE LATER OTHERWISE THERE WILL BE BUGS
+        idCell.textContent = attraction.id;  // TODO: NOTE THIS IS JUST A PLACEHOLDER, CHANGE LATER OTHERWISE THERE WILL BE BUGS
 
         const ratingCell = newRow.insertCell(2);
-        ratingCell.textContent = attraction.rating; // NOTE THIS IS JUST A PLACEHOLDER, CHANGE LATER OTHERWISE THERE WILL BE BUGS
+        ratingCell.textContent = attraction.rating; // TODO: NOTE THIS IS JUST A PLACEHOLDER, CHANGE LATER OTHERWISE THERE WILL BE BUGS
     })
 }
 
-// This function resets or initializes the demotable.
-async function resetDemotable() {
-    const response = await fetch("/initiate-demotable", {
-        method: 'POST'
-    });
-    const responseData = await response.json();
+//Purpose: Extracts attraction data, triggers POST request
+async function addNewAttractionSubmit() {
+    const name = document.getElementById('insertName').value;
+    const lat = document.getElementById('insertLat').value;
+    const long = document.getElementById('insertLon').value;
+    const open = document.getElementById('insertOpen').value;
+    const close = document.getElementById('insertClose').value;
+    const description = document.getElementById('insertDescription').value;
+    const category = document.getElementById('chooseCat').value;    
 
-    if (responseData.success) {
-        const messageElement = document.getElementById('resetResultMsg');
-        messageElement.textContent = "demotable initiated successfully!";
-        fetchTableData();
-    } else {
-        alert("Error initiating table!");
+    //testing
+    console.log(name);
+    console.log(lat);
+    console.log(long);
+    console.log(open);
+    console.log(close);
+    console.log(description);
+    console.log(category);
+
+    const attractionJson = {
+        name : name,
+        lat : lat,
+        long : long,
+        open : open,
+        close : close,
+        description : description,
+        category : category
+    }
+
+    try {
+        addAttraction(attractionJson);
+    } catch (error) {
+        alert('failed to insert data');
     }
 }
 
-// Inserts new records into the demotable.
-async function insertDemotable(event) {
-    event.preventDefault();
+//Input: Attraction in JSON format
+//Purpose: Deliver a POST request to add into database
+async function addAttraction(attraction) {
 
-    const idValue = document.getElementById('insertId').value;
-    const nameValue = document.getElementById('insertName').value;
-
-    const response = await fetch('/insert-demotable', {
+    //TODO: PLUG IN ROUTING AFTER COMPLETING BACKEND
+    const response = await fetch("XYZCYZYZYZYZYZY", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-            id: idValue,
-            name: nameValue
-        })
+        body: JSON.stringify(attraction)
     });
 
-    const responseData = await response.json();
-    const messageElement = document.getElementById('insertResultMsg');
+    if (!response.ok) {
+        throw new Error();
+    } 
 
-    if (responseData.success) {
-        messageElement.textContent = "Data inserted successfully!";
-        fetchTableData();
-    } else {
-        messageElement.textContent = "Error inserting data!";
-    }
+    console.log("add successful"); // debugging purposes
 }
+
+
+// This function resets or initializes the demotable.
+// async function resetDemotable() {
+//     const response = await fetch("/initiate-demotable", {
+//         method: 'POST'
+//     });
+//     const responseData = await response.json();
+
+//     if (responseData.success) {
+//         const messageElement = document.getElementById('resetResultMsg');
+//         messageElement.textContent = "demotable initiated successfully!";
+//         fetchTableData();
+//     } else {
+//         alert("Error initiating table!");
+//     }
+// }
+
+// Inserts new records into the demotable.
+// async function insertDemotable(event) {
+//     event.preventDefault();
+
+//     const idValue = document.getElementById('insertId').value;
+//     const nameValue = document.getElementById('insertName').value;
+
+//     const response = await fetch('/insert-demotable', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify({
+//             id: idValue,
+//             name: nameValue
+//         })
+//     });
+
+//     const responseData = await response.json();
+//     const messageElement = document.getElementById('insertResultMsg');
+
+//     if (responseData.success) {
+//         messageElement.textContent = "Data inserted successfully!";
+//         fetchTableData();
+//     } else {
+//         messageElement.textContent = "Error inserting data!";
+//     }
+// }
 
 // Updates names in the demotable.
 async function updateNameDemotable(event) {
