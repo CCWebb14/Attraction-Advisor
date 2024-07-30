@@ -1,6 +1,5 @@
 const oracledb = require('oracledb');
 const loadEnvFile = require('./utils/envUtil');
-
 const envVariables = loadEnvFile('./.env');
 
 // Database configuration setup. Ensure your .env file has the required database credentials.
@@ -76,32 +75,28 @@ async function testOracleConnection() {
     });
 }
 
+async function getAttractions(province, city) {
+    console.log(province);
+    console.log(city);
+
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT Latitude, Longitude
+             FROM TouristAttractions1
+             WHERE PROVINCE = 'ON' AND CITY = 'OTTAWA'`
+        );
+        console.log(result);
+        console.log(result.rows);
+        console.log(result.rows[0]);
+    })
+}
+
 async function fetchDemotableFromDb() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute('SELECT * FROM DEMOTABLE');
         return result.rows;
     }).catch(() => {
         return [];
-    });
-}
-
-async function initiateDemotable() {
-    return await withOracleDB(async (connection) => {
-        try {
-            await connection.execute(`DROP TABLE DEMOTABLE`);
-        } catch(err) {
-            console.log('Table might not exist, proceeding to create...');
-        }
-
-        const result = await connection.execute(`
-            CREATE TABLE DEMOTABLE (
-                id NUMBER PRIMARY KEY,
-                name VARCHAR2(20)
-            )
-        `);
-        return true;
-    }).catch(() => {
-        return false;
     });
 }
 
@@ -144,9 +139,9 @@ async function countDemotable() {
 
 module.exports = {
     testOracleConnection,
+    getAttractions,
     fetchDemotableFromDb,
-    initiateDemotable, 
-    insertDemotable, 
-    updateNameDemotable, 
+    insertDemotable,
+    updateNameDemotable,
     countDemotable
 };

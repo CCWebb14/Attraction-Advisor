@@ -7,6 +7,7 @@ const router = express.Router();
 // API endpoints
 // Modify or extend these routes based on your project's needs.
 router.get('/check-db-connection', async (req, res) => {
+    console.log('test');
     const isConnect = await appService.testOracleConnection();
     if (isConnect) {
         res.send('connected');
@@ -15,18 +16,15 @@ router.get('/check-db-connection', async (req, res) => {
     }
 });
 
-router.get('/demotable', async (req, res) => {
-    const tableContent = await appService.fetchDemotableFromDb();
-    res.json({data: tableContent});
+router.post('/get-attractions', async (req, res) => {
+    const { province, city } = req.body;
+    const tableContent = await appService.getAttractions(province, city);
+    res.json({ data: tableContent });
 });
 
-router.post("/initiate-demotable", async (req, res) => {
-    const initiateResult = await appService.initiateDemotable();
-    if (initiateResult) {
-        res.json({ success: true });
-    } else {
-        res.status(500).json({ success: false });
-    }
+router.get('/demotable', async (req, res) => {
+    const tableContent = await appService.fetchDemotableFromDb();
+    res.json({ data: tableContent });
 });
 
 router.post("/insert-demotable", async (req, res) => {
@@ -52,13 +50,13 @@ router.post("/update-name-demotable", async (req, res) => {
 router.get('/count-demotable', async (req, res) => {
     const tableCount = await appService.countDemotable();
     if (tableCount >= 0) {
-        res.json({ 
-            success: true,  
+        res.json({
+            success: true,
             count: tableCount
         });
     } else {
-        res.status(500).json({ 
-            success: false, 
+        res.status(500).json({
+            success: false,
             count: tableCount
         });
     }
