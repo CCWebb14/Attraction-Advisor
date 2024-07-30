@@ -1,26 +1,3 @@
-// This function checks the database connection and updates its status on the frontend.
-async function checkDbConnection() {
-    const statusElem = document.getElementById('dbStatus');
-    const loadingGifElem = document.getElementById('loadingGif');
-
-    const response = await fetch('/check-db-connection', {
-        method: "GET"
-    });
-
-    // Hide the loading GIF once the response is received.
-    loadingGifElem.style.display = 'none';
-    // Display the statusElem's text in the placeholder.
-    statusElem.style.display = 'inline';
-
-    response.text()
-    .then((text) => {
-        statusElem.textContent = text;
-    })
-    .catch((error) => {
-        statusElem.textContent = 'connection timed out';  // Adjust error handling if required.
-    });
-}
-
 //Purpose: retrieves values from html file, triggers get method, then triggers display method
 async function findAndDisplayAttractions() {
     const inputProvince = document.getElementById('provinceInput').value;
@@ -155,7 +132,7 @@ async function addAttraction(attraction) {
 async function repopulatedata() {
 
     //TODO: add path to route for default data
-    const response = await fetch("XYZ");
+    const response = await fetch("/intiate-table");
 
     if (!response.ok) {
         alert("Repopulation not completed properly");
@@ -222,98 +199,124 @@ async function updateDbAttraction(attractionJson) {
     })
 }
 
+//Purpose: Executes GET request with PROJECTIONS with selected checkboxes
+async function projectExperiences() {
+    const experienceCheckboxes = document.querySelectorAll('#experienceFilter .form-check-input');
+    //note selectedBoxes is an array that will be sent for projection 
+    const selectedBoxes = [];
 
-// This function resets or initializes the demotable.
-// async function resetDemotable() {
-//     const response = await fetch("/initiate-demotable", {
-//         method: 'POST'
-//     });
-//     const responseData = await response.json();
+    experienceCheckboxes.forEach(checkbox =>{
+        if (checkbox.checked) {
+            selectedBoxes.push(checkbox.value);
+        }
+    });
 
-//     if (responseData.success) {
-//         const messageElement = document.getElementById('resetResultMsg');
-//         messageElement.textContent = "demotable initiated successfully!";
-//         fetchTableData();
-//     } else {
-//         alert("Error initiating table!");
-//     }
-// }
+    if (experienceCheckboxes.length === 0) {
+        alert("Please select at least 1 attribute");
+        return;
+    }
 
-// Inserts new records into the demotable.
-// async function insertDemotable(event) {
+    try {
+        const responseData = fetchProjectionExperiences(selectedBoxes);
+        addExperiencesToDynamicTable(selectedBoxes,responseData);
+    } catch (error) {
+        alert("Not filtered properly");
+    }
+
+}
+
+//Purpose: Sends JSON attributes for a PROJECTION query
+async function fetchProjectionExperiences(selectedBoxes) {
+
+    //TODO: Change route to connect to backend
+
+    const response = await fetch('XYZ', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({toSelect: selectedBoxes})
+        //NOTE: THE SELECTION HAS TO BE THE SAME ORDER AS THE ARRAY!!!
+    })
+
+    if (!response.ok) {
+        throw new Error();
+    }
+
+    return response.json();
+}
+
+//Purpose: adds data to table dynamically
+// TODO: COMPLETE LATER
+async function addExperiencesToDynamicTable(selectedBoxes, responseData) {
+
+    const experienceHeader = document.getElementById("experienceHeader");
+    const experienceBody = document.getElementById("experienceBody");
+
+    experienceHeader.innerHTML = '';
+    experienceBody.innerHTML = '';
+
+    const headRow = document.createElement('tr');
+    selectedBoxes.forEach(boxOption => {
+        const headerCell = document.createElement('th');
+        headerCell.textContent = boxOption;
+        headRow.appendChild(headerCell);
+    })
+    experienceHeader.appendChild(headRow);
+
+    // responseData.forEach((data) => {
+    //     const row = document.createElement('tr');
+
+    // })
+
+}
+
+// Updates names in the demotable.
+// async function updateNameDemotable(event) {
 //     event.preventDefault();
 
-//     const idValue = document.getElementById('insertId').value;
-//     const nameValue = document.getElementById('insertName').value;
+//     const oldNameValue = document.getElementById('updateOldName').value;
+//     const newNameValue = document.getElementById('updateNewName').value;
 
-//     const response = await fetch('/insert-demotable', {
+//     const response = await fetch('/update-name-demotable', {
 //         method: 'POST',
 //         headers: {
 //             'Content-Type': 'application/json'
 //         },
 //         body: JSON.stringify({
-//             id: idValue,
-//             name: nameValue
+//             oldName: oldNameValue,
+//             newName: newNameValue
 //         })
 //     });
 
 //     const responseData = await response.json();
-//     const messageElement = document.getElementById('insertResultMsg');
+//     const messageElement = document.getElementById('updateNameResultMsg');
 
 //     if (responseData.success) {
-//         messageElement.textContent = "Data inserted successfully!";
+//         messageElement.textContent = "Name updated successfully!";
 //         fetchTableData();
 //     } else {
-//         messageElement.textContent = "Error inserting data!";
+//         messageElement.textContent = "Error updating name!";
 //     }
 // }
 
-// Updates names in the demotable.
-async function updateNameDemotable(event) {
-    event.preventDefault();
+// // Counts rows in the demotable.
+// // Modify the function accordingly if using different aggregate functions or procedures.
+// async function countDemotable() {
+//     const response = await fetch("/count-demotable", {
+//         method: 'GET'
+//     });
 
-    const oldNameValue = document.getElementById('updateOldName').value;
-    const newNameValue = document.getElementById('updateNewName').value;
+//     const responseData = await response.json();
+//     const messageElement = document.getElementById('countResultMsg');
 
-    const response = await fetch('/update-name-demotable', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            oldName: oldNameValue,
-            newName: newNameValue
-        })
-    });
-
-    const responseData = await response.json();
-    const messageElement = document.getElementById('updateNameResultMsg');
-
-    if (responseData.success) {
-        messageElement.textContent = "Name updated successfully!";
-        fetchTableData();
-    } else {
-        messageElement.textContent = "Error updating name!";
-    }
-}
-
-// Counts rows in the demotable.
-// Modify the function accordingly if using different aggregate functions or procedures.
-async function countDemotable() {
-    const response = await fetch("/count-demotable", {
-        method: 'GET'
-    });
-
-    const responseData = await response.json();
-    const messageElement = document.getElementById('countResultMsg');
-
-    if (responseData.success) {
-        const tupleCount = responseData.count;
-        messageElement.textContent = `The number of tuples in demotable: ${tupleCount}`;
-    } else {
-        alert("Error in count demotable!");
-    }
-}
+//     if (responseData.success) {
+//         const tupleCount = responseData.count;
+//         messageElement.textContent = `The number of tuples in demotable: ${tupleCount}`;
+//     } else {
+//         alert("Error in count demotable!");
+//     }
+// }
 
 
 // ---------------------------------------------------------------

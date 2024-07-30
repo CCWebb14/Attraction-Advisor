@@ -53,10 +53,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Test1</a>
+                    <a class="nav-link" href="#">Login/Signup</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Test2</a>
+                    <a class="nav-link" href="#">Attractions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Experiences</a>
                 </li>
             </ul>
         </div>
@@ -161,9 +164,6 @@
     <hr><br> <!-- ========================================================================= -->
 
     <h2> Search for Specific Attraction</h2>
-    <div id="attractionDetails" class="border p-3 mt-3">
-
-    </div>
     <button type="button"> View Images</button> 
     <button type="button" id="bookExperience"> Explore & Book Experience </button> <br>
 
@@ -174,38 +174,46 @@
     <div id="experienceFilter">
         <form>
             <div class="form-group">
-                <input type="text" id="filterAttractionExperience" placeholder="Enter Attraction ID" required>
+                <input type="text" id="filterAttractionExperience" placeholder="Enter Experience ID" required>
             </div>
             <h5>Select relevant info</h5>
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="experienceID">
+                <input class="form-check-input" type="checkbox" value="experienceID" id="experienceID">
                 <label class="form-check-label" for="experienceID"> Experience ID</label>
             </div>
 
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="experienceName">
+                <input class="form-check-input" type="checkbox" value="experienceName" id="experienceName">
                 <label class="form-check-label" for="experienceName"> Experience Name</label>
             </div>
 
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="experienceDescription">
+                <input class="form-check-input" type="checkbox" value="experienceDesc" id="experienceDescription">
                 <label class="form-check-label" for="experienceDescription"> Experience Description</label>
             </div>
             
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="experienceCompany">
+                <input class="form-check-input" type="checkbox" value="company" id="experienceCompany">
                 <label class="form-check-label" for="experienceCompany"> Experience Company</label>
             </div>
 
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="experiencePrice">
+                <input class="form-check-input" type="checkbox" value="price" id="experiencePrice">
                 <label class="form-check-label" for="experiencePrice"> Experience Price</label>
             </div>
 
-            <button type="button"> Find More Details</button> 
+            <button type="button" id="projectExperiences" onclick="projectExperiences()"> Find More Details</button> 
             
         </form>
     </div>
+
+    <h2 class="mt-4"> Experience Details</h2>
+    <table class="table table-bordered table-hover table-sm">
+        <thead class="table-dark">
+            <tr id="experienceHeader"></tr>
+        </thead>
+        <tbody id="experienceBody"></tbody>
+    </table>
 
     <!-- ===================================================================================== -->
     <!-- External JavaScript file that contains the functionality/logic for the operations above. -->
