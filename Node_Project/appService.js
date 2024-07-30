@@ -75,19 +75,19 @@ async function testOracleConnection() {
     });
 }
 
+// Query type satisfied: SELECTION
 async function getAttractions(province, city) {
-    console.log(province);
-    console.log(city);
-
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `SELECT attractionName, attractionID, category
-             FROM TouristAttractions2
-             WHERE PROVINCE = 'ON' AND CITY = 'Ottawa'`
+            `SELECT attractionID, attractionName
+             FROM TouristAttractions1 T1, TouristAttractions2 T2
+             WHERE T1.latitude = T2.latitude AND T1.longitude = T2.longitude
+             AND T1.province = :province AND T1.city = :city`,
+            [province, city]
         );
-        console.log(result);
-        console.log(result.rows);
-        console.log(result.rows[0]);
+        return result.rows;
+    }).catch(() => {
+        return [];
     })
 }
 

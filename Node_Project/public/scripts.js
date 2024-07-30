@@ -1,11 +1,16 @@
 
+//Inputs required: elementID of an element that contains text
+//Purpose: sanitize text input from an element
+//Returns: element text converted to lowercase
+function retrieveAndSanitizeText(elementID) {
+    return document.getElementById(elementID).value.toLowerCase();
+}
+
+
 //Purpose: retrieves values from html file, triggers get method, then triggers display method
 async function findAndDisplayAttractions() {
-    const inputProvince = document.getElementById('provinceInput').value;
-    const inputCity = document.getElementById('cityInput').value;
-
-    console.log(inputCity); // testing
-    console.log(inputProvince); //testing
+    const inputProvince = retrieveAndSanitizeText('provinceInput');
+    const inputCity = retrieveAndSanitizeText('cityInput');
 
     if (!inputProvince || !inputCity) {
         alert("enter province or city");
@@ -43,7 +48,7 @@ async function getAttractions(provinceInput, cityInput) {
     }
 
     const parsedValue = await response.json();
-    return parsedValue;
+    return parsedValue.data;
 }
 
 //Inputs required: attractions in form of JSON
@@ -52,24 +57,23 @@ async function displayAttractionsOnTable(attractions) {
     const attractionTable = document.getElementById('attractionresultstable');
     const tableBody = attractionTable.querySelector('tbody');
 
-    //clear before displaying
+    //clear old data before displaying
     if (tableBody) {
         tableBody.innerHTML = '';
     }
 
     attractions.forEach(attraction => {
+        // Destructuring assignment of attraction JSON
+        const [attractionID, attractionName] = attraction;
 
         //create row
         const newRow = tableBody.insertRow();
 
         const nameCell = newRow.insertCell(0);
-        nameCell.textContent = attraction.name; // TODO: NOTE THIS IS JUST A PLACEHOLDER, CHANGE LATER OTHERWISE THERE WILL BE BUGS
+        nameCell.textContent = attractionName; // TODO: NOTE THIS IS JUST A PLACEHOLDER, CHANGE LATER OTHERWISE THERE WILL BE BUGS
 
         const idCell = newRow.insertCell(1);
-        idCell.textContent = attraction.id;  // TODO: NOTE THIS IS JUST A PLACEHOLDER, CHANGE LATER OTHERWISE THERE WILL BE BUGS
-
-        const ratingCell = newRow.insertCell(2);
-        ratingCell.textContent = attraction.rating; // TODO: NOTE THIS IS JUST A PLACEHOLDER, CHANGE LATER OTHERWISE THERE WILL BE BUGS
+        idCell.textContent = attractionID;  // TODO: NOTE THIS IS JUST A PLACEHOLDER, CHANGE LATER OTHERWISE THERE WILL BE BUGS
     })
 }
 
