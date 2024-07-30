@@ -81,9 +81,9 @@ async function getAttractions(province, city) {
 
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `SELECT Latitude, Longitude
-             FROM TouristAttractions1
-             WHERE PROVINCE = 'ON' AND CITY = 'OTTAWA'`
+            `SELECT attractionName, attractionID, category
+             FROM TouristAttractions2
+             WHERE PROVINCE = 'ON' AND CITY = 'Ottawa'`
         );
         console.log(result);
         console.log(result.rows);
