@@ -362,7 +362,6 @@ window.onload = function () {
     checkDbConnection();
     fetchTableData();
     document.getElementById("findAttractions").addEventListener("click", findAndDisplayAttractions);
-    document.getElementById("test1").addEventListener("click", findAndDisplayAttractions);
     // document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
     // document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
     // document.getElementById("countDemotable").addEventListener("click", countDemotable);
