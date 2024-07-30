@@ -111,7 +111,7 @@
 
     <div class="attractionContainer">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <h2> Update Attraction</h2>
                 <form id="updateattractiontable">
                     ID: <input type="text" id="idModify" placeholder="Enter ID to Modify" maxlength="20" required> <br><br>
@@ -135,7 +135,7 @@
                 <button id="updateAttraction" onclick="updateAttraction()"> Update attraction</button>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <h2> Add New Attraction </h2>
                 <form id="insertattractiontable">
                     Name: <input type="text" id="insertName" placeholder="Enter Name" maxlength="20" required> <br><br>
@@ -156,6 +156,14 @@
                     </select>
                 </form>
                 <button type="submit" id="newAttractionSubmit" onclick="addNewAttractionSubmit()"> Add now! </button> <br>
+            </div>
+
+            <div class="col-md-4">
+                <h2> Delete Attraction</h2>
+                <form id="deleteattractiontable">
+                    ID: <input type="text" id="idToDelete" placeholder="Enter Attraction to Delete" maxlength="20" required> <br><br>
+                </form>
+                <button type="submit" id="deleteButtonSubmit" onclick="deleteAttraction()"> Delete Now! </button> <br>
             </div>
         </div>
     </div>

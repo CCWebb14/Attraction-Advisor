@@ -199,6 +199,34 @@ async function updateDbAttraction(attractionJson) {
     })
 }
 
+//Purpose: Obtains ID to delete and sends DELETE request
+async function deleteAttraction() {
+    const attractionToDeleteID = document.getElementById('idToDelete');
+
+    try {
+        executeDelete(attractionToDeleteID);
+        alert("Attraction deleted!")
+    } catch (error) {
+        alert("not deleted properly");
+    }
+}
+
+//Inputs: AttractionID string
+async function executeDelete(attractionToDeleteID) {
+    //TODO: Fill with correct routing
+    const response = await fetch("XYZ", {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id : attractionToDeleteID})
+    })
+
+    if (!response.ok) {
+        throw new Error();
+    } 
+}
+
 //Purpose: Executes GET request with PROJECTIONS with selected checkboxes
 async function projectExperiences() {
     const experienceCheckboxes = document.querySelectorAll('#experienceFilter .form-check-input');
