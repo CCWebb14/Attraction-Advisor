@@ -233,8 +233,8 @@ async function executeDelete(attractionToDeleteID) {
 
 //Purpose: Executes GET request with PROJECTIONS with selected checkboxes
 async function projectExperiencesCheckbox() {
-    const experienceID = document.getElementById("filterAttractionExperience").value;
-    console.log(experienceID);
+    const attractionID = document.getElementById("filterAttractionExperience").value;
+    console.log(attractionID);
     const experienceCheckboxes = document.querySelectorAll('#experienceFilter .form-check-input');
     //note selectedBoxes is an array that will be sent for projection 
     const selectedBoxes = [];
@@ -246,7 +246,7 @@ async function projectExperiencesCheckbox() {
     });
 
     const experienceJSON = {
-        experienceID: experienceID,
+        attractionID: attractionID,
         selectedBoxes: selectedBoxes
     }
 

@@ -247,7 +247,7 @@ async function projectExperienceAttributes(id, toSelect) {
                 query,
                 [id]
             );
-            return result;
+            return result.rows;
         } catch (error) {
             throw error;
         }
