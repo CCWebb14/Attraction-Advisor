@@ -28,6 +28,17 @@ router.post('/add-attraction', async (req, res) => {
     res.json({ data: tableContent });
 })
 
+router.delete('/delete-attraction', async (req, res) => {
+    const { attractionID } = req.body;
+    const success = await appService.deleteAttraction(attractionID);
+    if (success) {
+        res.status(200).json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
+    }
+})
+
+
 router.get('/demotable', async (req, res) => {
     const tableContent = await appService.fetchDemotableFromDb();
     res.json({ data: tableContent });
@@ -67,6 +78,7 @@ router.get('/count-demotable', async (req, res) => {
         });
     }
 });
+
 
 
 module.exports = router;

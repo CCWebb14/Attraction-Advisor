@@ -205,30 +205,29 @@ async function updateDbAttraction(attractionJson) {
 
 //Purpose: Obtains ID to delete and sends DELETE request
 async function deleteAttraction() {
-    const attractionToDeleteID = document.getElementById('idToDelete');
+    const attractionID = document.getElementById('idToDelete').value;
 
     try {
-        executeDelete(attractionToDeleteID);
+        await executeDelete(attractionID);
         alert("Attraction deleted!")
     } catch (error) {
-        alert("not deleted properly");
+        alert("Deletion failed to execute.");
     }
 }
 
 //Inputs: AttractionID string
-async function executeDelete(attractionToDeleteID) {
-    //TODO: Fill with correct routing
-    const response = await fetch("XYZ", {
+async function executeDelete(attractionID) {
+    const response = await fetch('/delete-attraction', {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({id : attractionToDeleteID})
+        body: JSON.stringify({ attractionID: attractionID })
     })
 
     if (!response.ok) {
         throw new Error();
-    } 
+    }
 }
 
 //Purpose: Executes GET request with PROJECTIONS with selected checkboxes
@@ -381,6 +380,7 @@ window.onload = function () {
     checkDbConnection();
     fetchTableData();
     document.getElementById("findAttractions").addEventListener("click", findAndDisplayAttractions);
+    document.getElementById("deleteAttractionButton").addEventListener("click", deleteAttraction);
     // document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
     // document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
     // document.getElementById("countDemotable").addEventListener("click", countDemotable);
