@@ -1,15 +1,21 @@
+
+//Inputs required: elementID of an element that contains text
+//Purpose: sanitize text input from an element
+//Returns: element text converted to lowercase
+function retrieveAndSanitizeText(elementID) {
+    return document.getElementById(elementID).value.toLowerCase();
+}
+
+
 //Purpose: retrieves values from html file, triggers get method, then triggers display method
 async function findAndDisplayAttractions() {
-    const inputProvince = document.getElementById('provinceInput').value;
-    const inputCity = document.getElementById('cityInput').value;
+    const inputProvince = retrieveAndSanitizeText('provinceInput');
+    const inputCity = retrieveAndSanitizeText('cityInput');
 
-    console.log(inputCity); // testing
-    console.log(inputProvince); //testing
-    
     if (!inputProvince || !inputCity) {
         alert("enter province or city");
         return;
-    } 
+    }
 
     try {
         const attractions = await getAttractions(inputProvince, inputCity);
@@ -23,18 +29,26 @@ async function findAndDisplayAttractions() {
 //Inputs required: province and city
 //Purpose: Performs a GET request and returns parsed JSON for diplsaying on main page.Throws error for try-catch if not found
 //NOTE: response JSON should only contain attraction Name, ID, and Star Rating
-async function getAttractions(inputProvince, inputCity) {
+async function getAttractions(provinceInput, cityInput) {
 
     // ON THE BACKEND ONLY RETURN NAME, ID, STAR RATING!
-    const url = "XYZYYYXYXYZYXYZXYXZ" // TODO: change url
-    const response = await fetch(url);
+    const response = await fetch('/get-attractions', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            province: provinceInput,
+            city: cityInput
+        })
+    })
 
     if (!response.ok) {
         throw new Error();
     }
 
     const parsedValue = await response.json();
-    return parsedValue;
+    return parsedValue.data;
 }
 
 //Inputs required: attractions in form of JSON
@@ -43,60 +57,50 @@ async function displayAttractionsOnTable(attractions) {
     const attractionTable = document.getElementById('attractionresultstable');
     const tableBody = attractionTable.querySelector('tbody');
 
-    //clear before displaying
+    //clear old data before displaying
     if (tableBody) {
         tableBody.innerHTML = '';
     }
 
     attractions.forEach(attraction => {
+        // Destructuring assignment of attraction JSON
+        const [attractionID, attractionName] = attraction;
 
         //create row
         const newRow = tableBody.insertRow();
 
         const nameCell = newRow.insertCell(0);
-        nameCell.textContent = attraction.name; // TODO: NOTE THIS IS JUST A PLACEHOLDER, CHANGE LATER OTHERWISE THERE WILL BE BUGS
+        nameCell.textContent = attractionName; // TODO: NOTE THIS IS JUST A PLACEHOLDER, CHANGE LATER OTHERWISE THERE WILL BE BUGS
 
         const idCell = newRow.insertCell(1);
-        idCell.textContent = attraction.id;  // TODO: NOTE THIS IS JUST A PLACEHOLDER, CHANGE LATER OTHERWISE THERE WILL BE BUGS
-
-        const ratingCell = newRow.insertCell(2);
-        ratingCell.textContent = attraction.rating; // TODO: NOTE THIS IS JUST A PLACEHOLDER, CHANGE LATER OTHERWISE THERE WILL BE BUGS
+        idCell.textContent = attractionID;  // TODO: NOTE THIS IS JUST A PLACEHOLDER, CHANGE LATER OTHERWISE THERE WILL BE BUGS
     })
 }
 
 //Purpose: Extracts attraction data, triggers POST request
 async function addNewAttractionSubmit() {
-    const name = document.getElementById('insertName').value;
+    const name = retrieveAndSanitizeText('insertName')
+    const description = retrieveAndSanitizeText('insertDescription');
+    const open = retrieveAndSanitizeText('insertOpen');
+    const close = retrieveAndSanitizeText('insertClose');
     const lat = document.getElementById('insertLat').value;
     const long = document.getElementById('insertLon').value;
-    const open = document.getElementById('insertOpen').value;
-    const close = document.getElementById('insertClose').value;
-    const description = document.getElementById('insertDescription').value;
-    const category = document.getElementById('chooseCat').value;    
+    const category = retrieveAndSanitizeText('chooseCat');
+    const province = retrieveAndSanitizeText('insertProv');
+    const city = retrieveAndSanitizeText('insertCity');
 
-    //is this good for id gen?
-    const uniqueInt = Math.floor(Math.random() * 10000);
-    const activityId = `${name}_${lat}_${long}_${uniqueInt}`;
+    // TODO: checking valid inputs, ex 5 decimal places for lat and long
 
-    //testing
-    console.log(name);
-    console.log(lat);
-    console.log(long);
-    console.log(open);
-    console.log(close);
-    console.log(description);
-    console.log(category);
-
-    // TODO: ensure that these json values are good
     const attractionJson = {
-        name : name,
-        lat : lat,
-        long : long,
-        open : open,
-        close : close,
-        description : description,
-        category : category,
-        id : activityId
+        name: name,
+        description: description,
+        open: open,
+        close: close,
+        lat: lat,
+        long: long,
+        category: category,
+        province: province,
+        city: city
     }
 
     try {
@@ -112,7 +116,7 @@ async function addNewAttractionSubmit() {
 async function addAttraction(attraction) {
 
     //TODO: PLUG IN ROUTING AFTER COMPLETING BACKEND
-    const response = await fetch("XYZCYZYZYZYZYZY", {
+    const response = await fetch("/add-attraction", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -122,7 +126,7 @@ async function addAttraction(attraction) {
 
     if (!response.ok) {
         throw new Error();
-    } 
+    }
 
     console.log("add successful"); // debugging purposes
 }
@@ -165,19 +169,19 @@ async function updateAttractionAction() {
     const newopen = document.getElementById('newinsertOpen').value;
     const newclose = document.getElementById('newinsertClose').value;
     const newdescription = document.getElementById('newinsertDescription').value;
-    const newcategory = document.getElementById('newchooseCat').value;    
+    const newcategory = document.getElementById('newchooseCat').value;
 
-    
+
     // TODO: ensure that these json values are good
     const attractionJson = {
-        id : activityId,
-        newname : newname,
-        newlat : newlat,
-        newlong : newlong,
-        newopen : newopen,
-        newclose : newclose,
-        newdescription : newdescription,
-        newcategory : newcategory
+        id: activityId,
+        newname: newname,
+        newlat: newlat,
+        newlong: newlong,
+        newopen: newopen,
+        newclose: newclose,
+        newdescription: newdescription,
+        newcategory: newcategory
     }
 
     try {
@@ -233,7 +237,7 @@ async function projectExperiences() {
     //note selectedBoxes is an array that will be sent for projection 
     const selectedBoxes = [];
 
-    experienceCheckboxes.forEach(checkbox =>{
+    experienceCheckboxes.forEach(checkbox => {
         if (checkbox.checked) {
             selectedBoxes.push(checkbox.value);
         }
@@ -246,7 +250,7 @@ async function projectExperiences() {
 
     try {
         const responseData = fetchProjectionExperiences(selectedBoxes);
-        addExperiencesToDynamicTable(selectedBoxes,responseData);
+        addExperiencesToDynamicTable(selectedBoxes, responseData);
     } catch (error) {
         alert("Not filtered properly");
     }
@@ -263,7 +267,7 @@ async function fetchProjectionExperiences(selectedBoxes) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({toSelect: selectedBoxes})
+        body: JSON.stringify({ toSelect: selectedBoxes })
         //NOTE: THE SELECTION HAS TO BE THE SAME ORDER AS THE ARRAY!!!
     })
 
@@ -346,21 +350,44 @@ async function addExperiencesToDynamicTable(selectedBoxes, responseData) {
 //     }
 // }
 
+// TODO: REMOVE. DEV ONLY. 
+// This function checks the database connection and updates its status on the frontend.
+async function checkDbConnection() {
+    const statusElem = document.getElementById('dbStatus');
+    const loadingGifElem = document.getElementById('loadingGif');
+
+    const response = await fetch('/check-db-connection', {
+        method: "GET"
+    });
+
+    // Hide the loading GIF once the response is received.
+    loadingGifElem.style.display = 'none';
+    // Display the statusElem's text in the placeholder.
+    statusElem.style.display = 'inline';
+
+    response.text()
+        .then((text) => {
+            statusElem.textContent = text;
+        })
+        .catch((error) => {
+            statusElem.textContent = 'connection timed out';  // Adjust error handling if required.
+        });
+}
 
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
 // Add or remove event listeners based on the desired functionalities.
-window.onload = function() {
+window.onload = function () {
     checkDbConnection();
     fetchTableData();
-    document.getElementById("resetDemotable").addEventListener("click", resetDemotable);
-    document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
-    document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
-    document.getElementById("countDemotable").addEventListener("click", countDemotable);
+    document.getElementById("findAttractions").addEventListener("click", findAndDisplayAttractions);
+    // document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
+    // document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
+    // document.getElementById("countDemotable").addEventListener("click", countDemotable);
 };
 
 // General function to refresh the displayed table data. 
 // You can invoke this after any table-modifying operation to keep consistency.
 function fetchTableData() {
-    fetchAndDisplayUsers();
+    // fetchAndDisplayUsers();
 }

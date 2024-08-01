@@ -10,14 +10,15 @@
     <style>
         #attractionresultstable {
             min-height: 200px;
-            max-height: 200px; 
+            max-height: 200px;
             overflow-y: auto;
-            overflow-x: auto; 
+            overflow-x: auto;
             border: 1px solid #dee2e6;
         }
+
         thead th {
-            position:sticky;
-            top:0;
+            position: sticky;
+            top: 0;
         }
     </style>
 
@@ -33,18 +34,18 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
     <!-- ===================================================================================== -->
-    <!-- Display the current status of the database connection. 
-         !!HERE TO HELP U DEBUGGING, NOT REQUIRED IN YOUR OWN PROJECT!!
-         -->
-    <!-- <h1>Database Connection Status: -->
-        <!-- An in-line placeholder to display connection status. -->
-        <!-- <span id="dbStatus"> </span> -->
-        <!-- A loading GIF, will be hided once get the status. -->
-        <!-- <img id="loadingGif" class="loading-gif" src="loading_100px.gif" alt="Loading..."> -->
-    <!-- </h1> -->
 
-    <!-- <br>
-    <hr><br> ========================================================================= -->
+    <!-- TODO: REMOVE. DEV ONLY. -->
+    <!-- Display the current status of the database connection.-->
+    <div>Database Connection Status:
+        <!-- An in-line placeholder to display connection status. -->
+        <span id="dbStatus"> </span>
+        <!-- A loading GIF, will be hided once get the status. -->
+        <img id="loadingGif" class="loading-gif" src="loading_100px.gif" alt="Loading...">
+    </div>
+    <br />
+
+    <!-- ========================================================================= -->
 
     <!-- Navbar adapted from bootstrap https://getbootstrap.com/docs/4.0/components/navbar/-->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -73,17 +74,19 @@
 
 
     <!-- Landing page: Used to filter for area-->
-        <h2 class="mb-4">Find Attractions Near Me</h2>
+    <h2 class="mb-4">Find Attractions Near Me</h2>
 
-        <div class="mb-3">
-            <input type="text"  class="form-control w-50 form-control-sm small-textbox" id="provinceInput" placeholder="Enter Province alpha code (2 letters)">
-        </div>
+    <div class="mb-3">
+        <input type="text" class="form-control w-50 form-control-sm small-textbox" id="provinceInput"
+            placeholder="Enter Province alpha code (2 letters)">
+    </div>
 
-        <div class="mb-3">
-            <input type="text"  class="form-control w-50 form-control-sm small-textbox" id="cityInput" placeholder="Enter City Name">
-        </div>
+    <div class="mb-3">
+        <input type="text" class="form-control w-50 form-control-sm small-textbox" id="cityInput"
+            placeholder="Enter City Name">
+    </div>
 
-        <button type="submit" class="btn btn-primary" onclick="findAndDisplayAttractions()">Find Attractions Now!</button>
+    <button id="findAttractions" type="submit" class="btn btn-primary">Find Attractions Now!</button>
 
     <br>
     <hr><br> <!-- ========================================================================= -->
@@ -95,7 +98,6 @@
                 <tr>
                     <th>Attraction Name</th>
                     <th>Attraction ID</th>
-                    <th>Star Rating</th>
                 </tr>
             </thead>
             <tbody>
@@ -114,13 +116,20 @@
             <div class="col-md-4">
                 <h2> Update Attraction</h2>
                 <form id="updateattractiontable">
-                    ID: <input type="text" id="idModify" placeholder="Enter ID to Modify" maxlength="20" required> <br><br>
-                    NewName: <input type="text" id="newinsertName" placeholder="Enter New Name" maxlength="20" required> <br><br>
-                    NewLatitude: <input type="number" id="newinsertLat" placeholder="Enter New Latitude" required> <br><br>
-                    NewLongitude: <input type="number" id="newinsertLon" placeholder="Enter New Longitude" required> <br><br>
-                    NewOpening Hour: <input type="text" id="newinsertOpen" placeholder="Enter New Opening Hour" maxlength="20" required> <br><br>
-                    NewClosing Hour: <input type="text" id="newinsertClose" placeholder="Enter New Closing Hour" maxlength="20" required> <br><br>
-                    NewDescription:  <input type="text" id="newinsertDescription" placeholder="Enter New Brief Description" maxlength="20" required> <br><br>
+                    ID: <input type="text" id="idModify" placeholder="Enter ID to Modify" maxlength="20" required>
+                    <br><br>
+                    NewName: <input type="text" id="newinsertName" placeholder="Enter New Name" maxlength="20" required>
+                    <br><br>
+                    NewLatitude: <input type="number" id="newinsertLat" placeholder="Enter New Latitude" required>
+                    <br><br>
+                    NewLongitude: <input type="number" id="newinsertLon" placeholder="Enter New Longitude" required>
+                    <br><br>
+                    NewOpening Hour: <input type="text" id="newinsertOpen" placeholder="Enter New Opening Hour"
+                        maxlength="20" required> <br><br>
+                    NewClosing Hour: <input type="text" id="newinsertClose" placeholder="Enter New Closing Hour"
+                        maxlength="20" required> <br><br>
+                    NewDescription: <input type="text" id="newinsertDescription"
+                        placeholder="Enter New Brief Description" maxlength="20" required> <br><br>
                     NewCategory:
                     <select id="newchooseCat">
                         <option value="">Select a Category</option>
@@ -139,12 +148,19 @@
                 <h2> Add New Attraction </h2>
                 <form id="insertattractiontable">
                     Name: <input type="text" id="insertName" placeholder="Enter Name" maxlength="20" required> <br><br>
-                    Latitude: <input type="number" id="insertLat" placeholder="Enter Latitude" required> <br><br>
-                    Longitude: <input type="number" id="insertLon" placeholder="Enter Longitude" required> <br><br>
-                    Opening Hour: <input type="text" id="insertOpen" placeholder="Enter Opening Hour" maxlength="20" required> <br><br>
-                    Closing Hour: <input type="text" id="insertClose" placeholder="Enter Closing Hour" maxlength="20" required> <br><br>
-                    Description:  <input type="text" id="insertDescription" placeholder="Enter Brief Description" maxlength="20" required> <br><br>
-                    Category: 
+                    Description: <input type="text" id="insertDescription" placeholder="Enter Brief Description"
+                        maxlength="20" required> <br><br>
+                    Opening Hour: <input type="time" id="insertOpen" placeholder="Enter Opening Hour" maxlength="20"
+                        required> <br><br>
+                    Closing Hour: <input type="time" id="insertClose" placeholder="Enter Closing Hour" maxlength="20"
+                        required> <br><br>
+                    Latitude: <input type="number" id="insertLat" placeholder="0.00000" required> <br><br>
+                    Longitude: <input type="number" id="insertLon" placeholder="0.00000" required> <br><br>
+                    Province: <input type="string" id="insertProv" placeholder="Enter Province" required> <br><br>
+                    City: <input type="string" id="insertCity" placeholder="Enter City" required> <br><br>
+
+
+                    Category:
                     <select id="chooseCat">
                         <option value="">Select a Category</option>
                         <option value="Museum">Museum</option>
@@ -155,7 +171,8 @@
                         <option value="Other">Other</option>
                     </select>
                 </form>
-                <button type="submit" id="newAttractionSubmit" onclick="addNewAttractionSubmit()"> Add now! </button> <br>
+                <button type="submit" id="newAttractionSubmit" onclick="addNewAttractionSubmit()"> Add now! </button>
+                <br>
             </div>
 
             <div class="col-md-4">
@@ -172,7 +189,7 @@
     <hr><br> <!-- ========================================================================= -->
 
     <h2> Search for Specific Attraction</h2>
-    <button type="button"> View Images</button> 
+    <button type="button"> View Images</button>
     <button type="button" id="bookExperience"> Explore & Book Experience </button> <br>
 
     <br>
@@ -199,7 +216,7 @@
                 <input class="form-check-input" type="checkbox" value="experienceDesc" id="experienceDescription">
                 <label class="form-check-label" for="experienceDescription"> Experience Description</label>
             </div>
-            
+
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="company" id="experienceCompany">
                 <label class="form-check-label" for="experienceCompany"> Experience Company</label>
@@ -210,8 +227,8 @@
                 <label class="form-check-label" for="experiencePrice"> Experience Price</label>
             </div>
 
-            <button type="button" id="projectExperiences" onclick="projectExperiences()"> Find More Details</button> 
-            
+            <button type="button" id="projectExperiences" onclick="projectExperiences()"> Find More Details</button>
+
         </form>
     </div>
 
