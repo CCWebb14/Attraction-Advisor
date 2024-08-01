@@ -252,7 +252,8 @@ async function projectExperiencesCheckbox() {
 
     try {
         const responseData = fetchProjectionExperiences(attractionId, selectedBoxes);
-        addExperiencesToDynamicTable(selectedBoxes, responseData);
+        console.log(responseData); //testing
+        //addExperiencesToDynamicTable(selectedBoxes, responseData);
     } catch (error) {
         alert("Not filtered properly");
     }
