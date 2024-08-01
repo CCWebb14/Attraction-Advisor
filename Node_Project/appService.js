@@ -1,6 +1,5 @@
 const oracledb = require('oracledb');
 const loadEnvFile = require('./utils/envUtil');
-
 const envVariables = loadEnvFile('./.env');
 
 // Database configuration setup. Ensure your .env file has the required database credentials.
@@ -76,32 +75,122 @@ async function testOracleConnection() {
     });
 }
 
+// Query type satisfied: SELECTION
+async function getAttractions(province, city) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT attractionID, attractionName
+             FROM TouristAttractions1 T1, TouristAttractions2 T2
+             WHERE T1.latitude = T2.latitude AND T1.longitude = T2.longitude
+             AND T1.province = :province AND T1.city = :city`,
+            [province, city]
+        );
+        return result.rows;
+    }).catch(() => {
+        return [];
+    })
+}
+
+async function addAttraction(name, description, open, close, lat, long, category, province, city) {
+
+    console.log(name, description, open, close, lat, long, category, province, city);
+
+    // First ensure that the foreign key is present in TouristAttractions1 table
+    if (!(await checkTouristAttraction1(lat, long, province, city))) {
+        await addTouristAttractions1(lat, long, province, city);
+    }
+
+    // Adding to TouristAttractions2
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `INSERT INTO TouristAttractions2 (attractionName, attractionDesc, category, openingHour, closingHour, latitude, longitude)
+            VALUES(:attractionName, :attractionDesc, :category, :openingHour, :closingHour, :latitude, :longitude)`,
+            [name, description, category, open, close, lat, long],
+            { autoCommit: true }
+        );
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch((err) => {
+        console.log(err);
+        return false;
+    })
+}
+
+// Check that the touristattraction1 exists
+async function checkTouristAttraction1(lat, long, province, city) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT *
+            FROM TouristAttractions1
+            WHERE latitude = :latitude AND longitude = :longitude AND 
+            province = :province AND city = :city`,
+            [lat, long, province, city]
+        );
+        console.log(result.rows.length > 0);
+        return (result.rows.length > 0);
+    }).catch((err) => {
+        console.log(err);
+        return false;
+    })
+}
+
+async function addTouristAttractions1(lat, long, province, city) {
+    // Ensure that province and city exist in Locations
+    if (!(await checkLocation(province, city))) {
+        await addLocation(province, city);
+    }
+
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `INSERT INTO TouristAttractions1
+            VALUES(:latitude, :longitude, :province, :city)`,
+            [lat, long, province, city],
+            { autoCommit: true }
+        );
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch((err) => {
+        console.log(err);
+        return false;
+    })
+}
+
+// Check that the location exists
+async function checkLocation(province, city) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT *
+            FROM Locations
+            WHERE province = :province AND city = :city`,
+            [province, city]
+        );
+        console.log(result.rows.length > 0);
+        return (result.rows.length > 0);
+    }).catch((err) => {
+        console.log(err);
+        return false;
+    })
+}
+
+async function addLocation(province, city) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `INSERT INTO Locations
+            VALUES(:province, :city)`,
+            [province, city],
+            { autoCommit: true }
+        );
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch((err) => {
+        console.log(err);
+        return false;
+    })
+}
+
 async function fetchDemotableFromDb() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute('SELECT * FROM DEMOTABLE');
         return result.rows;
     }).catch(() => {
         return [];
-    });
-}
-
-async function initiateDemotable() {
-    return await withOracleDB(async (connection) => {
-        try {
-            await connection.execute(`DROP TABLE DEMOTABLE`);
-        } catch(err) {
-            console.log('Table might not exist, proceeding to create...');
-        }
-
-        const result = await connection.execute(`
-            CREATE TABLE DEMOTABLE (
-                id NUMBER PRIMARY KEY,
-                name VARCHAR2(20)
-            )
-        `);
-        return true;
-    }).catch(() => {
-        return false;
     });
 }
 
@@ -144,9 +233,10 @@ async function countDemotable() {
 
 module.exports = {
     testOracleConnection,
+    getAttractions,
+    addAttraction,
     fetchDemotableFromDb,
-    initiateDemotable, 
-    insertDemotable, 
-    updateNameDemotable, 
+    insertDemotable,
+    updateNameDemotable,
     countDemotable
 };
