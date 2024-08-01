@@ -393,3 +393,5 @@ INSERT INTO Photos VALUES (3, 3, 'https://example.com/calgary_tower.jpg', 'a vie
 INSERT INTO Photos VALUES (4, 4, 'https://example.com/parliament_hill.jpg', 'parliament hill in ottawa.', TO_DATE('2024-07-23', 'YYYY-MM-DD')); 
 
 INSERT INTO Photos VALUES (5, 5, 'https://example.com/cn_tower.jpg', 'the cn tower in toronto.', TO_DATE('2024-07-24', 'YYYY-MM-DD'));
+
+COMMIT;
