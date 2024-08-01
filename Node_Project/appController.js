@@ -17,9 +17,16 @@ router.get('/check-db-connection', async (req, res) => {
 
 router.post('/get-attractions', async (req, res) => {
     const { province, city } = req.body;
+    console.log(province, city)
     const tableContent = await appService.getAttractions(province, city);
     res.json({ data: tableContent });
 });
+
+router.post('/add-attraction', async (req, res) => {
+    const { name, description, open, close, lat, long, category, province, city } = req.body;
+    const tableContent = await appService.addAttraction(name, description, open, close, lat, long, category, province, city);
+    res.json({ data: tableContent });
+})
 
 router.get('/demotable', async (req, res) => {
     const tableContent = await appService.fetchDemotableFromDb();

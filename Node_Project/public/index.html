@@ -148,14 +148,18 @@
                 <h2> Add New Attraction </h2>
                 <form id="insertattractiontable">
                     Name: <input type="text" id="insertName" placeholder="Enter Name" maxlength="20" required> <br><br>
-                    Latitude: <input type="number" id="insertLat" placeholder="Enter Latitude" required> <br><br>
-                    Longitude: <input type="number" id="insertLon" placeholder="Enter Longitude" required> <br><br>
-                    Opening Hour: <input type="text" id="insertOpen" placeholder="Enter Opening Hour" maxlength="20"
-                        required> <br><br>
-                    Closing Hour: <input type="text" id="insertClose" placeholder="Enter Closing Hour" maxlength="20"
-                        required> <br><br>
                     Description: <input type="text" id="insertDescription" placeholder="Enter Brief Description"
                         maxlength="20" required> <br><br>
+                    Opening Hour: <input type="time" id="insertOpen" placeholder="Enter Opening Hour" maxlength="20"
+                        required> <br><br>
+                    Closing Hour: <input type="time" id="insertClose" placeholder="Enter Closing Hour" maxlength="20"
+                        required> <br><br>
+                    Latitude: <input type="number" id="insertLat" placeholder="0.00000" required> <br><br>
+                    Longitude: <input type="number" id="insertLon" placeholder="0.00000" required> <br><br>
+                    Province: <input type="string" id="insertProv" placeholder="Enter Province" required> <br><br>
+                    City: <input type="string" id="insertCity" placeholder="Enter City" required> <br><br>
+
+
                     Category:
                     <select id="chooseCat">
                         <option value="">Select a Category</option>

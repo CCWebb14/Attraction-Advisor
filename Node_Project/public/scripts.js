@@ -79,37 +79,28 @@ async function displayAttractionsOnTable(attractions) {
 
 //Purpose: Extracts attraction data, triggers POST request
 async function addNewAttractionSubmit() {
-    const name = document.getElementById('insertName').value;
+    const name = retrieveAndSanitizeText('insertName')
+    const description = retrieveAndSanitizeText('insertDescription');
+    const open = retrieveAndSanitizeText('insertOpen');
+    const close = retrieveAndSanitizeText('insertClose');
     const lat = document.getElementById('insertLat').value;
     const long = document.getElementById('insertLon').value;
-    const open = document.getElementById('insertOpen').value;
-    const close = document.getElementById('insertClose').value;
-    const description = document.getElementById('insertDescription').value;
-    const category = document.getElementById('chooseCat').value;
+    const category = retrieveAndSanitizeText('chooseCat');
+    const province = retrieveAndSanitizeText('insertProv');
+    const city = retrieveAndSanitizeText('insertCity');
 
-    //is this good for id gen?
-    const uniqueInt = Math.floor(Math.random() * 10000);
-    const activityId = `${name}_${lat}_${long}_${uniqueInt}`;
+    // TODO: checking valid inputs, ex 5 decimal places for lat and long
 
-    //testing
-    console.log(name);
-    console.log(lat);
-    console.log(long);
-    console.log(open);
-    console.log(close);
-    console.log(description);
-    console.log(category);
-
-    // TODO: ensure that these json values are good
     const attractionJson = {
         name: name,
-        lat: lat,
-        long: long,
+        description: description,
         open: open,
         close: close,
-        description: description,
+        lat: lat,
+        long: long,
         category: category,
-        id: activityId
+        province: province,
+        city: city
     }
 
     try {
@@ -125,7 +116,7 @@ async function addNewAttractionSubmit() {
 async function addAttraction(attraction) {
 
     //TODO: PLUG IN ROUTING AFTER COMPLETING BACKEND
-    const response = await fetch("XYZCYZYZYZYZYZY", {
+    const response = await fetch("/add-attraction", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
