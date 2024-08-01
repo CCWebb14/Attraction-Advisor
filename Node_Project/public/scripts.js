@@ -223,18 +223,18 @@ async function executeDelete(attractionToDeleteID) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({id : attractionToDeleteID})
+        body: JSON.stringify({ id: attractionToDeleteID })
     })
 
     if (!response.ok) {
         throw new Error();
-    } 
+    }
 }
 
 //Purpose: Executes GET request with PROJECTIONS with selected checkboxes
 async function projectExperiencesCheckbox() {
-    const attractionId = document.getElementById("experienceID");
-    console.log(attractionId);
+    const experienceID = document.getElementById("filterAttractionExperience").value;
+    console.log(experienceID);
     const experienceCheckboxes = document.querySelectorAll('#experienceFilter .form-check-input');
     //note selectedBoxes is an array that will be sent for projection 
     const selectedBoxes = [];
@@ -245,13 +245,20 @@ async function projectExperiencesCheckbox() {
         }
     });
 
+    const experienceJSON = {
+        experienceID: experienceID,
+        selectedBoxes: selectedBoxes
+    }
+
+    console.log(selectedBoxes);
+
     if (experienceCheckboxes.length === 0) {
         alert("Please select at least 1 attribute");
         return;
     }
 
     try {
-        const responseData = fetchProjectionExperiences(attractionId, selectedBoxes);
+        const responseData = await fetchProjectionExperiences(experienceJSON);
         console.log(responseData); //testing
         //addExperiencesToDynamicTable(selectedBoxes, responseData);
     } catch (error) {
@@ -261,14 +268,14 @@ async function projectExperiencesCheckbox() {
 }
 
 //Purpose: Sends JSON attributes for a PROJECTION query
-async function fetchProjectionExperiences(attractionId, selectedBoxes) {
+async function fetchProjectionExperiences(experienceJSON) {
 
     const response = await fetch('/project-tables', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ id: attractionId, toSelect: selectedBoxes })
+        body: JSON.stringify(experienceJSON)
     })
 
     if (!response.ok) {
@@ -381,7 +388,7 @@ window.onload = function () {
     checkDbConnection();
     fetchTableData();
     document.getElementById("findAttractions").addEventListener("click", findAndDisplayAttractions);
-    // document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
+    document.getElementById("projectExperiences").addEventListener("click", projectExperiencesCheckbox);
     // document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
     // document.getElementById("countDemotable").addEventListener("click", countDemotable);
 };

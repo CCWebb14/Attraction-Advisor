@@ -258,6 +258,7 @@ module.exports = {
     testOracleConnection,
     getAttractions,
     addAttraction,
+    projectExperienceAttributes,
     fetchDemotableFromDb,
     insertDemotable,
     updateNameDemotable,
