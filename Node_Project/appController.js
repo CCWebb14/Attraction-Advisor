@@ -68,5 +68,13 @@ router.get('/count-demotable', async (req, res) => {
     }
 });
 
+router.post("/project-tables", async (req, res) => {
+    const {id, toSelect} = req.body;
+    const projectedExperiences = await appService.projectExperienceAttribute(id, toSelect);
+
+    if (projectedExperiences) {
+        res.json({projectedExperiences});
+    }
+})
 
 module.exports = router;

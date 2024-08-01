@@ -232,7 +232,9 @@ async function executeDelete(attractionToDeleteID) {
 }
 
 //Purpose: Executes GET request with PROJECTIONS with selected checkboxes
-async function projectExperiences() {
+async function projectExperiencesCheckbox() {
+    const attractionId = document.getElementById("experienceID");
+    console.log(attractionId);
     const experienceCheckboxes = document.querySelectorAll('#experienceFilter .form-check-input');
     //note selectedBoxes is an array that will be sent for projection 
     const selectedBoxes = [];
@@ -249,7 +251,7 @@ async function projectExperiences() {
     }
 
     try {
-        const responseData = fetchProjectionExperiences(selectedBoxes);
+        const responseData = fetchProjectionExperiences(attractionId, selectedBoxes);
         addExperiencesToDynamicTable(selectedBoxes, responseData);
     } catch (error) {
         alert("Not filtered properly");
@@ -258,17 +260,14 @@ async function projectExperiences() {
 }
 
 //Purpose: Sends JSON attributes for a PROJECTION query
-async function fetchProjectionExperiences(selectedBoxes) {
+async function fetchProjectionExperiences(attractionId, selectedBoxes) {
 
-    //TODO: Change route to connect to backend
-
-    const response = await fetch('XYZ', {
+    const response = await fetch('/project-tables', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ toSelect: selectedBoxes })
-        //NOTE: THE SELECTION HAS TO BE THE SAME ORDER AS THE ARRAY!!!
+        body: JSON.stringify({ id: attractionId, toSelect: selectedBoxes })
     })
 
     if (!response.ok) {

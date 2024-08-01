@@ -231,6 +231,32 @@ async function countDemotable() {
     });
 }
 
+async function projectExperienceAttribute(id, toSelect) {
+    return await withOracleDB(async (connection) => {
+
+        let parsedSelectorString = '';
+
+        for (i = 0; i < toSelect.length; i++) {
+            parsedSelectorString += `${toSelect[i]}`;
+
+            if (i < toSelect.length - 1) {
+                parsedSelectorString += ', ';
+            }
+        }
+
+        const query = `
+        SELECT ${parsedSelectorString} 
+        FROM ExperienceOffered
+        WHERE attractionID = :id
+        `
+        const result = await connection.execute(
+            query,
+            [id]
+        );
+        return result;
+    })
+}
+
 module.exports = {
     testOracleConnection,
     getAttractions,
