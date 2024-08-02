@@ -268,25 +268,23 @@ async function projectExperienceAttributes(id, toSelect) {
     })
 }
 
-// Query type satisfied: SELECTION
+// Query type satisfied: Division
+// TODO: should first check that the attraction exists
 async function findAficionados(attractionID) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
             `SELECT userID, userName
             FROM UserProfile U
-            WHERE NOT EXISTS
+            WHERE NOT EXISTS 
                 ((SELECT E.experienceID
                 FROM ExperienceOffered E
-                WHERE (attractionID = :attractionID))
-                EXCEPT
-                    (SELECT B.experienceID
+                WHERE attractionID = :id)
+                MINUS (SELECT B.experienceID
                     FROM Booking2 B
-                    WHERE B.userID = U.userID)
-                )`,
+                    WHERE B.userID = U.userID))`,
             [attractionID]
         );
         console.log(result);
-        console.log(result.rows);
         return result.rows;
     }).catch(() => {
         return [];

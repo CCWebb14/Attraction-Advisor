@@ -346,11 +346,11 @@ async function findAficianadosAction() {
     }
 }
 
-//Purpose: Executes GET request to backend to fetch
+//Purpose: Executes POST request to backend to fetch
 async function findAficianados(aficianadoJSON) {
     console.log(aficianadoJSON);
     const response = await fetch("/find-aficionados", {
-        method: 'GET',
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },

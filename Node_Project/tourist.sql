@@ -309,47 +309,64 @@ values(4, 5);
 
 
 insert into ExperienceOffered
-values(0, 2, 'seawall walk', 'a scenic walk along the seawall in stanley park.', 'localtours', 30.00);
+values(0, 1, 'seawall walk', 'a scenic walk along the seawall in stanley park.', 'walking company', 30.00);
 
 insert into ExperienceOffered 
-values (1, 3, 'garden Tour', 'a guided tour of the butchart gardens.', 'gardens', 20.00 ); 
+values(1, 2, 'garden Tour', 'a guided tour of the butchart gardens.', 'butchart inc.', 20.00 ); 
 
 insert into ExperienceOffered 
-values (2, 4, 'tower observation', 'an observation experience at the top of calgary tower.', 'landmarks', 25.00 ); 
+values(2, 3, 'tower observation', 'an observation experience at the top of calgary tower.', 'city of calgary', 25.00 ); 
 
 insert into ExperienceOffered 
-values (3, 5, 'historical tour', 'a guided historical tour of parliament hill.', 'history', 15.00 ); 
+values(3, 4, 'historical tour', 'a guided historical tour of parliament hill.', 'canada', 15.00 ); 
 
 insert into ExperienceOffered 
-values (4, 5, 'skyline view', 'an observation experience at the top of the cn tower.', 'landmarks', 35.00 );
+values(4, 5, 'skyline view', 'an observation experience at the top of the cn tower.', 'canada lands company', 35.00 );
+
+insert into ExperienceOffered
+values(5, 1, 'bicycle park tour', 'with miles of car-free paths and lots to see, vancouver’s stanley park is perfect for exploring by bicycle.', 'city of vancouver', 50.00);
+
+insert into ExperienceOffered
+values(6, 5, '360 restaurant', 'surround your guests with the finest of canadian dining—and the finest of canadian views—at 360 the restaurant at the cn tower. 360 completes a full rotation every 72 minutes, giving every guest a fresh perspective on the city below.',
+'cn tower', 100.00);
 
 
-INSERT INTO Booking1 VALUES (1, 0, TO_DATE('2024-07-20 12:30', 'YYYY-MM-DD HH24:MI'), 1); 
+INSERT INTO Booking1 VALUES (0, 0, TO_DATE('2024-07-20 12:30', 'YYYY-MM-DD HH24:MI'), 1); 
 
-INSERT INTO Booking1 VALUES (2, 1, TO_DATE('2024-07-21 13:30', 'YYYY-MM-DD HH24:MI'), 2); 
+INSERT INTO Booking1 VALUES (1, 1, TO_DATE('2024-07-21 13:30', 'YYYY-MM-DD HH24:MI'), 2); 
 
-INSERT INTO Booking1 VALUES (3, 2, TO_DATE('2024-07-22 15:40', 'YYYY-MM-DD HH24:MI'), 3); 
+INSERT INTO Booking1 VALUES (2, 2, TO_DATE('2024-07-22 15:40', 'YYYY-MM-DD HH24:MI'), 3); 
 
-INSERT INTO Booking1 VALUES (4, 3, TO_DATE('2024-07-23 17:20', 'YYYY-MM-DD HH24:MI'), 4); 
+INSERT INTO Booking1 VALUES (3, 3, TO_DATE('2024-07-23 17:20', 'YYYY-MM-DD HH24:MI'), 4); 
 
-INSERT INTO Booking1 VALUES (5, 4, TO_DATE('2024-07-24 8:30', 'YYYY-MM-DD HH24:MI'), 5);
+INSERT INTO Booking1 VALUES (4, 4, TO_DATE('2024-07-24 8:30', 'YYYY-MM-DD HH24:MI'), 5);
+
+INSERT INTO Booking1 VALUES (5, 0, TO_DATE('2024-08-01 11:00', 'YYYY-MM-DD HH24:MI'), 1);
+
+INSERT INTO Booking1 VALUES (6, 1, TO_DATE('2024-08-01 11:00', 'YYYY-MM-DD HH24:MI'), 5);
+
 
 
 INSERT INTO Booking2
-VALUES (1, 1, 0, TO_DATE('2024-07-20 12:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('2024-07-20 13:30', 'YYYY-MM-DD HH24:MI'), 2);
+VALUES (0, 0, 0, TO_DATE('2024-07-20 12:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('2024-07-20 13:30', 'YYYY-MM-DD HH24:MI'), 2);
 
 INSERT INTO Booking2
-VALUES (2, 2, 1, TO_DATE('2024-07-21 13:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('2024-07-21 15:40', 'YYYY-MM-DD HH24:MI'), 3);
+VALUES (1, 1, 1, TO_DATE('2024-07-21 13:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('2024-07-21 15:40', 'YYYY-MM-DD HH24:MI'), 3);
 
 INSERT INTO Booking2
-VALUES (3, 3, 2, TO_DATE('2024-07-22 15:40', 'YYYY-MM-DD HH24:MI'), TO_DATE('2024-07-22 17:20', 'YYYY-MM-DD HH24:MI'), 4);
+VALUES (2, 2, 2, TO_DATE('2024-07-22 15:40', 'YYYY-MM-DD HH24:MI'), TO_DATE('2024-07-22 17:20', 'YYYY-MM-DD HH24:MI'), 4);
 
 INSERT INTO Booking2
-VALUES (4, 4, 3, TO_DATE('2024-07-23 17:20', 'YYYY-MM-DD HH24:MI'), TO_DATE('2024-07-23 18:00', 'YYYY-MM-DD HH24:MI'), 2);
+VALUES (3, 3, 3, TO_DATE('2024-07-23 17:20', 'YYYY-MM-DD HH24:MI'), TO_DATE('2024-07-23 18:00', 'YYYY-MM-DD HH24:MI'), 2);
 
 INSERT INTO Booking2
-VALUES (5, 5, 4, TO_DATE('2024-07-24 8:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('2024-07-24 9:30', 'YYYY-MM-DD HH24:MI'), 1);
+VALUES (4, 4, 4, TO_DATE('2024-07-24 8:30', 'YYYY-MM-DD HH24:MI'), TO_DATE('2024-07-24 9:30', 'YYYY-MM-DD HH24:MI'), 1);
 
+INSERT INTO Booking2
+VALUES (5, 5, 0, TO_DATE('2024-08-01 11:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2024-08-01 12:30', 'YYYY-MM-DD HH24:MI'), 1);
+
+INSERT INTO Booking2
+VALUES (6, 6, 1, TO_DATE('2024-08-01 11:00', 'YYYY-MM-DD HH24:MI'), TO_DATE('2024-08-01 12:30', 'YYYY-MM-DD HH24:MI'), 1);
 
 INSERT INTO Responses VALUES (1, 0, 1, TO_DATE('2024-07-20', 'YYYY-MM-DD'), 'amazing experience at stanley park!'); 
 
