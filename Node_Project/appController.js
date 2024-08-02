@@ -95,5 +95,13 @@ router.post("/project-tables", async (req, res) => {
     }
 });
 
+router.get("/find-aficionados", async (req, res) => {
+    const { attractionID } = req.body;
+    console.log(attractionID);
+    const tableContent = await appService.findAficionados(attractionID);
+    console.log(tableContent);
+    res.json({ data: tableContent });
+});
+
 
 module.exports = router;

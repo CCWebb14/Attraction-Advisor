@@ -268,6 +268,31 @@ async function projectExperienceAttributes(id, toSelect) {
     })
 }
 
+// Query type satisfied: SELECTION
+async function findAficionados(attractionID) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT userID, userName
+            FROM UserProfile U
+            WHERE NOT EXISTS
+                ((SELECT E.experienceID
+                FROM ExperienceOffered E
+                WHERE (attractionID = :attractionID))
+                EXCEPT
+                    (SELECT B.experienceID
+                    FROM Booking2 B
+                    WHERE B.userID = U.userID)
+                )`,
+            [attractionID]
+        );
+        console.log(result);
+        console.log(result.rows);
+        return result.rows;
+    }).catch(() => {
+        return [];
+    })
+}
+
 module.exports = {
     testOracleConnection,
     getAttractions,
@@ -277,5 +302,6 @@ module.exports = {
     fetchDemotableFromDb,
     insertDemotable,
     updateNameDemotable,
-    countDemotable
+    countDemotable,
+    findAficionados
 };

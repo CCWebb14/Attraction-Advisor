@@ -328,6 +328,40 @@ async function addExperiencesToDynamicTable(selectedBoxes, responseData) {
     });
 }
 
+//Purpose: Handles search button press
+async function findAficianadosAction() {
+    const attractionID = document.getElementById('aficionadoAttractionID').value;
+    console.log(attractionID);
+
+    const aficianadoJSON = {
+        attractionID: attractionID
+    }
+    console.log(aficianadoJSON);
+
+    try {
+        await findAficianados(aficianadoJSON);
+        alert('Aficianados were successfuly discovered.');
+    } catch (error) {
+        alert('findAficianados has returned unsuccessfuly.')
+    }
+}
+
+//Purpose: Executes GET request to backend to fetch
+async function findAficianados(aficianadoJSON) {
+    console.log(aficianadoJSON);
+    const response = await fetch("/find-aficionados", {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(aficianadoJSON)
+    })
+
+    if (!response.ok) {
+        throw new Error();
+    }
+}
+
 // Updates names in the demotable.
 // async function updateNameDemotable(event) {
 //     event.preventDefault();
@@ -408,6 +442,7 @@ window.onload = function () {
     document.getElementById("findAttractions").addEventListener("click", findAndDisplayAttractions);
     document.getElementById("deleteAttractionButton").addEventListener("click", deleteAttraction);
     document.getElementById("projectExperiences").addEventListener("click", projectExperiencesCheckbox);
+    document.getElementById("findAficianados").addEventListener("click", findAficianadosAction);
     // document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
     // document.getElementById("countDemotable").addEventListener("click", countDemotable);
 };
