@@ -329,37 +329,63 @@ async function addExperiencesToDynamicTable(selectedBoxes, responseData) {
 }
 
 //Purpose: Handles search button press
-async function findAficianadosAction() {
-    const attractionID = document.getElementById('aficionadoAttractionID').value;
-    console.log(attractionID);
+async function findCompletionistAction() {
+    const attractionID = document.getElementById('completionistAttractionID').value;
 
-    const aficianadoJSON = {
+    const completionistObject = {
         attractionID: attractionID
     }
-    console.log(aficianadoJSON);
 
     try {
-        await findAficianados(aficianadoJSON);
-        alert('Aficianados were successfuly discovered.');
+        const completionists = await findCompletionist(completionistObject);
+        displayCompletionistsOnTable(completionists);
+        alert('Completionist were successfuly discovered.');
     } catch (error) {
-        alert('findAficianados has returned unsuccessfuly.')
+        alert('findCompletionist has returned unsuccessfuly.')
     }
 }
 
 //Purpose: Executes POST request to backend to fetch
-async function findAficianados(aficianadoJSON) {
-    console.log(aficianadoJSON);
-    const response = await fetch("/find-aficionados", {
+async function findCompletionist(completionistObject) {
+    const response = await fetch("/find-completionists", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(aficianadoJSON)
+        body: JSON.stringify(completionistObject)
     })
 
     if (!response.ok) {
         throw new Error();
     }
+
+    const parsedValue = await response.json();
+    return parsedValue.data;
+}
+
+//Inputs required: user table rows
+//Purpose: Displays user data in the main page by adding each object into a row
+async function displayCompletionistsOnTable(completionists) {
+    const attractionTable = document.getElementById('attractionCompletionistResultsTable');
+    const tableBody = attractionTable.querySelector('tbody');
+
+    //clear old data before displaying
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    completionists.forEach(completionist => {
+        // Destructuring assignment of completionist object
+        const [userID, userName] = completionist;
+
+        const newRow = tableBody.insertRow();
+
+        const idCell = newRow.insertCell(0);
+        idCell.textContent = userID;
+
+        const usernameCell = newRow.insertCell(1);
+        usernameCell.textContent = userName;
+    })
 }
 
 // Updates names in the demotable.
@@ -442,7 +468,7 @@ window.onload = function () {
     document.getElementById("findAttractions").addEventListener("click", findAndDisplayAttractions);
     document.getElementById("deleteAttractionButton").addEventListener("click", deleteAttraction);
     document.getElementById("projectExperiences").addEventListener("click", projectExperiencesCheckbox);
-    document.getElementById("findAficianados").addEventListener("click", findAficianadosAction);
+    document.getElementById("findCompletionists").addEventListener("click", findCompletionistAction);
     // document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
     // document.getElementById("countDemotable").addEventListener("click", countDemotable);
 };
