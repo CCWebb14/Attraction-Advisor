@@ -133,6 +133,23 @@ async function checkTouristAttraction1(lat, long, province, city) {
     })
 }
 
+// Check that the touristattraction1 exists
+async function checkTouristAttraction2(attractionID) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT *
+            FROM TouristAttractions2
+            WHERE attractionID = :id`,
+            [attractionID]
+        );
+        console.log(result.rows.length > 0);
+        return (result.rows.length > 0);
+    }).catch((err) => {
+        console.log(err);
+        return false;
+    })
+}
+
 async function addTouristAttractions1(lat, long, province, city) {
     // Ensure that province and city exist in Locations
     if (!(await checkLocation(province, city))) {
@@ -268,6 +285,35 @@ async function projectExperienceAttributes(id, toSelect) {
     })
 }
 
+// Query type satisfied: Division
+async function findCompletionist(attractionID) {
+    // First ensure that the attraction exists, otherwise division will result in every user
+    const result = await checkTouristAttraction2(attractionID);
+
+    if (!result) {
+        return [];
+    }
+
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT userID, userName
+            FROM UserProfile U
+            WHERE NOT EXISTS 
+                ((SELECT E.experienceID
+                FROM ExperienceOffered E
+                WHERE attractionID = :id)
+                MINUS (SELECT B.experienceID
+                    FROM Booking2 B
+                    WHERE B.userID = U.userID))`,
+            [attractionID]
+        );
+        console.log(result);
+        return result.rows;
+    }).catch(() => {
+        return [];
+    })
+}
+
 module.exports = {
     testOracleConnection,
     getAttractions,
@@ -277,5 +323,6 @@ module.exports = {
     fetchDemotableFromDb,
     insertDemotable,
     updateNameDemotable,
-    countDemotable
+    countDemotable,
+    findCompletionist
 };
