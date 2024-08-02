@@ -265,6 +265,16 @@ async function countDemotable() {
 async function projectExperienceAttributes(id, toSelect) {
     return await withOracleDB(async (connection) => {
 
+        //Pre defined hash_set to prevent sql injections in O(1) time
+        selectorSet= new Set(['experienceID', 'experienceName', 'experienceDesc','company','price']);
+
+        //Check
+        toSelect.forEach(option => {
+            if (!selectorSet.has(option)) {
+                throw new Error(`Potential SQL Injection`);
+            }
+        });
+
         let parsedSelectorString = toSelect.join(', ');
 
         const query = `
