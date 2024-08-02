@@ -20,6 +20,20 @@
             position: sticky;
             top: 0;
         }
+
+        #experienceprojectable {
+            min-height: 200px;
+            max-height: 200px;
+            overflow-y: auto;
+            overflow-x: auto;
+            border: 1px solid #dee2e6;
+        }
+
+        #experienceprojectable .table {
+            width: 100%;
+            table-layout: fixed;
+        }
+
     </style>
 
 
@@ -46,25 +60,6 @@
     <br />
 
     <!-- ========================================================================= -->
-
-    <!-- Navbar adapted from bootstrap https://getbootstrap.com/docs/4.0/components/navbar/-->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand">Attraction Advisor</a>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Login/Signup</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Attractions</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Experiences</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
 
     <h1 class="text-primary text-center mt-5">Welcome to Attraction Advisor</h1>
 
@@ -118,19 +113,20 @@
                 <form id="updateattractiontable">
                     ID: <input type="text" id="idModify" placeholder="Enter ID to Modify" maxlength="20" required>
                     <br><br>
-                    NewName: <input type="text" id="newinsertName" placeholder="Enter New Name" maxlength="20" required>
+                    New Name: <input type="text" id="newinsertName" placeholder="Enter New Name" maxlength="20"
+                        required>
                     <br><br>
-                    NewLatitude: <input type="number" id="newinsertLat" placeholder="Enter New Latitude" required>
+                    New Latitude: <input type="number" id="newinsertLat" placeholder="Enter New Latitude" required>
                     <br><br>
-                    NewLongitude: <input type="number" id="newinsertLon" placeholder="Enter New Longitude" required>
+                    New Longitude: <input type="number" id="newinsertLon" placeholder="Enter New Longitude" required>
                     <br><br>
-                    NewOpening Hour: <input type="text" id="newinsertOpen" placeholder="Enter New Opening Hour"
+                    New Opening Hour: <input type="time" id="newinsertOpen" placeholder="Enter New Opening Hour"
                         maxlength="20" required> <br><br>
-                    NewClosing Hour: <input type="text" id="newinsertClose" placeholder="Enter New Closing Hour"
+                    New Closing Hour: <input type="time" id="newinsertClose" placeholder="Enter New Closing Hour"
                         maxlength="20" required> <br><br>
-                    NewDescription: <input type="text" id="newinsertDescription"
+                    New Description: <input type="text" id="newinsertDescription"
                         placeholder="Enter New Brief Description" maxlength="20" required> <br><br>
-                    NewCategory:
+                    New Category:
                     <select id="newchooseCat">
                         <option value="">Select a Category</option>
                         <option value="Museum">Museum</option>
@@ -178,7 +174,8 @@
             <div class="col-md-4">
                 <h2> Delete Attraction</h2>
                 <form id="deleteattractiontable">
-                    ID: <input type="text" id="idToDelete" placeholder="Enter Attraction to Delete" maxlength="20" required> <br><br>
+                    ID: <input type="text" id="idToDelete" placeholder="Enter Attraction to Delete" maxlength="20"
+                        required> <br><br>
                 </form>
                 <button type="submit" id="deleteButtonSubmit" onclick="deleteAttraction()"> Delete Now! </button> <br>
             </div>
@@ -199,7 +196,7 @@
     <div id="experienceFilter">
         <form>
             <div class="form-group">
-                <input type="text" id="filterAttractionExperience" placeholder="Enter Experience ID" required>
+                <input type="text" id="filterAttractionExperience" placeholder="Enter Attraction ID" required>
             </div>
             <h5>Select relevant info</h5>
             <div class="form-check">
@@ -227,18 +224,20 @@
                 <label class="form-check-label" for="experiencePrice"> Experience Price</label>
             </div>
 
-            <button type="button" id="projectExperiences" onclick="projectExperiences()"> Find More Details</button>
+            <button type="button" id="projectExperiences"> Find More Details</button>
 
         </form>
     </div>
-
-    <h2 class="mt-4"> Experience Details</h2>
-    <table class="table table-bordered table-hover table-sm">
-        <thead class="table-dark">
-            <tr id="experienceHeader"></tr>
-        </thead>
-        <tbody id="experienceBody"></tbody>
-    </table>
+    <div id="experienceprojectable">
+        <table class="table table-bordered table-hover table-sm">
+            <thead class="table-dark">
+                <tr id="experienceHeader">
+                    <th>Display Table</th>
+                </tr>
+            </thead>
+            <tbody id="experienceBody"></tbody>
+        </table>
+    </div>
 
     <!-- ===================================================================================== -->
     <!-- External JavaScript file that contains the functionality/logic for the operations above. -->

@@ -223,16 +223,18 @@ async function executeDelete(attractionToDeleteID) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({id : attractionToDeleteID})
+        body: JSON.stringify({ id: attractionToDeleteID })
     })
 
     if (!response.ok) {
         throw new Error();
-    } 
+    }
 }
 
 //Purpose: Executes GET request with PROJECTIONS with selected checkboxes
-async function projectExperiences() {
+async function projectExperiencesCheckbox() {
+    const attractionID = document.getElementById("filterAttractionExperience").value;
+    console.log(attractionID);
     const experienceCheckboxes = document.querySelectorAll('#experienceFilter .form-check-input');
     //note selectedBoxes is an array that will be sent for projection 
     const selectedBoxes = [];
@@ -243,13 +245,21 @@ async function projectExperiences() {
         }
     });
 
+    const experienceJSON = {
+        attractionID: attractionID,
+        selectedBoxes: selectedBoxes
+    }
+
+    console.log(selectedBoxes);
+
     if (experienceCheckboxes.length === 0) {
         alert("Please select at least 1 attribute");
         return;
     }
 
     try {
-        const responseData = fetchProjectionExperiences(selectedBoxes);
+        const responseData = await fetchProjectionExperiences(experienceJSON);
+        console.log(responseData); //testing
         addExperiencesToDynamicTable(selectedBoxes, responseData);
     } catch (error) {
         alert("Not filtered properly");
@@ -258,17 +268,14 @@ async function projectExperiences() {
 }
 
 //Purpose: Sends JSON attributes for a PROJECTION query
-async function fetchProjectionExperiences(selectedBoxes) {
+async function fetchProjectionExperiences(experienceJSON) {
 
-    //TODO: Change route to connect to backend
-
-    const response = await fetch('XYZ', {
+    const response = await fetch('/project-tables', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ toSelect: selectedBoxes })
-        //NOTE: THE SELECTION HAS TO BE THE SAME ORDER AS THE ARRAY!!!
+        body: JSON.stringify(experienceJSON)
     })
 
     if (!response.ok) {
@@ -278,8 +285,8 @@ async function fetchProjectionExperiences(selectedBoxes) {
     return response.json();
 }
 
+// Inputs: array[selectedboxes], array[responseData]
 //Purpose: adds data to table dynamically
-// TODO: COMPLETE LATER
 async function addExperiencesToDynamicTable(selectedBoxes, responseData) {
 
     const experienceHeader = document.getElementById("experienceHeader");
@@ -291,16 +298,35 @@ async function addExperiencesToDynamicTable(selectedBoxes, responseData) {
     const headRow = document.createElement('tr');
     selectedBoxes.forEach(boxOption => {
         const headerCell = document.createElement('th');
-        headerCell.textContent = boxOption;
+        let newText;
+        if (boxOption == 'experienceID') {
+            newText = 'Experience ID'
+        } else if (boxOption == 'experienceName') {
+            newText = 'Experience Name'
+        } else if (boxOption == 'experienceDesc') {
+            newText = 'Experience Description'
+        } else if (boxOption == 'company') {
+            newText = 'Host Company'
+        } else if (boxOption == 'price') {
+            newText = 'Experience Price'
+        }
+        headerCell.textContent = newText;
         headRow.appendChild(headerCell);
-    })
+    });
     experienceHeader.appendChild(headRow);
 
-    // responseData.forEach((data) => {
-    //     const row = document.createElement('tr');
+    const experiences = responseData.projectedExperiences;
 
-    // })
+    experiences.forEach((experience) => {
+        const row = document.createElement('tr');
 
+        for (i = 0; i < selectedBoxes.length; i++) {
+            const cell = document.createElement('td');
+            cell.textContent = experience[i];
+            row.appendChild(cell);
+        }
+        experienceBody.appendChild(row);
+    });
 }
 
 // Updates names in the demotable.
@@ -381,7 +407,7 @@ window.onload = function () {
     checkDbConnection();
     fetchTableData();
     document.getElementById("findAttractions").addEventListener("click", findAndDisplayAttractions);
-    // document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
+    document.getElementById("projectExperiences").addEventListener("click", projectExperiencesCheckbox);
     // document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
     // document.getElementById("countDemotable").addEventListener("click", countDemotable);
 };
