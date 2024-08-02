@@ -50,7 +50,7 @@ grant select on TouristAttractions1 to public;
 
 CREATE TABLE TouristAttractions2(
    attractionID number GENERATED ALWAYS AS IDENTITY,
-   attractionName varchar(20),
+   attractionName varchar(50),
    attractionDesc varchar(1000),
    category varchar(20),
    openingHour varchar(5),
@@ -243,19 +243,24 @@ insert into TouristAttractions1
 values(45.42153, -75.69719, 'on', 'ottawa');
 insert into TouristAttractions1
 values(43.65107, -79.34702, 'on', 'toronto');
+insert into TouristAttractions1
+values (49.27124, -123.13487, 'bc', 'vancouver');
+insert into TouristAttractions1
+values (49.282446, -123.12071, 'bc', 'vancouver');
+
 
 
 -- auto incrementing id 1
 insert into TouristAttractions2 (attractionName, attractionDesc, category, openingHour, closingHour, latitude, longitude)
 values('stanley park',
    q'[north america's third-largest park draws eight million visitors per year, many of whom may skate or walk past you on the seawall, a scenic, 5.5-mile path running along the water on the park's perimeter. It's just one of many trails among the park's 1,000 acres, which also house an aquarium, nature center and other recreational facilities.]',
-   'parks', null, null, 49.30427, -123.14421);
+   'park', null, null, 49.30427, -123.14421);
 
 -- auto incrementing id 2
 insert into TouristAttractions2 (attractionName, attractionDesc, category, openingHour, closingHour, latitude, longitude)
 values('butchart gardens',
    q'[a group of floral display gardens in brentwood bay, british columbia, canada, near victoria on vancouver island. the gardens receive over a million visitors each year.]',
-   'parks', '9:00', '17:00', 48.42842, -123.36564);
+   'park', '9:00', '17:00', 48.42842, -123.36564);
 
 -- auto incrementing id 3
 insert into TouristAttractions2 (attractionName, attractionDesc, category, openingHour, closingHour, latitude, longitude)
@@ -267,13 +272,24 @@ values('calgary tower',
 insert into TouristAttractions2 (attractionName, attractionDesc, category, openingHour, closingHour, latitude, longitude)
 values('parliament hill',
    q'[an area of crown land on the southern banks of the ottawa river in downtown ottawa, ontario. its gothic revival suite of buildings is the home of the parliament of canada.]',
-   'landmarks', '10:00', '18:00', 45.421530, -75.697191);
+   'historical site', '10:00', '18:00', 45.421530, -75.697191);
 
 -- auto incrementing id 5
 insert into TouristAttractions2 (attractionName, attractionDesc, category, openingHour, closingHour, latitude, longitude)
 values('cn tower',
    q'[a 553.3 m-high concrete communications and observation tower located in downtown toronto, ontario.]',
-   'landmarks', null, null, 43.65107, -79.34702);
+   'landmark', null, null, 43.65107, -79.34702);
+
+-- auto incrementing id 6
+insert into TouristAttractions2 (attractionName, attractionDesc, category, openingHour, closingHour, latitude, longitude)
+values('granville island',
+   q'[this large sandbar and former industrial site is now a posh, artsy neighborhood filled with quaint shops, eateries, breweries, and year-round arts and cultural festivals]',
+   'landmark', null, null, 49.27124, -123.13487);
+
+-- auto incrementing id 7
+insert into TouristAttractions2 (attractionName, attractionDesc, category, openingHour, closingHour, latitude, longitude)
+values('vancouver art gallery',
+   q'[one of north americas most exciting and innovative visual arts institutions.]', 'museum', '10:00', '20:00', 49.282446, -123.12071);
 
 
 insert into Transportation
@@ -324,7 +340,7 @@ insert into ExperienceOffered
 values(4, 5, 'skyline view', 'an observation experience at the top of the cn tower.', 'canada lands company', 35.00 );
 
 insert into ExperienceOffered
-values(5, 1, 'bicycle park tour', 'with miles of car-free paths and lots to see, vancouver’s stanley park is perfect for exploring by bicycle.', 'city of vancouver', 50.00);
+values(5, 1, 'bicycle park tour', 'with miles of car-free paths and lots to see, vancouvers stanley park is perfect for exploring by bicycle.', 'city of vancouver', 50.00);
 
 insert into ExperienceOffered
 values(6, 5, '360 restaurant', 'surround your guests with the finest of canadian dining—and the finest of canadian views—at 360 the restaurant at the cn tower. 360 completes a full rotation every 72 minutes, giving every guest a fresh perspective on the city below.',
