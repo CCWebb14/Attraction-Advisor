@@ -270,7 +270,34 @@ async function projectExperienceAttributes(id, toSelect) {
 
 async function applyPriceFilters(price, comparison) {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute()
+        let query;
+
+        if (comparison == 'equals') {
+            query = 
+            `SELECT experienceID, experienceName, price 
+            FROM ExperienceOffered 
+            WHERE price = :price`;
+        } else if (comparison == 'larger') {
+            query = 
+            `SELECT experienceID, experienceName, price 
+            FROM ExperienceOffered 
+            WHERE price >= :price`;
+        } else if (comparison == 'smaller') {
+            query = 
+            `SELECT experienceID, experienceName, price 
+            FROM ExperienceOffered 
+            WHERE price <= :price`;
+        }
+
+        try {
+            const result = await connection.execute(
+                query,
+                [price]
+            );
+            return result.rows;
+        } catch (error) {
+            throw error;
+        }
     })
 }
 
