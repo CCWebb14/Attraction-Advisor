@@ -79,6 +79,21 @@ router.get('/count-demotable', async (req, res) => {
     }
 });
 
+router.post("/project-tables", async (req, res) => {
+    const { attractionID, selectedBoxes } = req.body;
+    console.log(attractionID, selectedBoxes);
+    try {
+        const projectedExperiences = await appService.projectExperienceAttributes(attractionID, selectedBoxes);
+
+        if (projectedExperiences) {
+            res.json({ projectedExperiences });
+        } else {
+            res.status(400).json({ success: false });
+        }
+    } catch (error) {
+        res.status(400).json({ success: false });
+    }
+});
 
 
 module.exports = router;
