@@ -230,6 +230,74 @@ async function executeDelete(attractionID) {
     }
 }
 
+//Purpose: Execute GET request that fulfills price criteria
+async function findSuitableBudget() {
+    const price = document.getElementById('priceTarget').value;
+    const comparison = document.getElementById('chooseComparison').value;
+
+    console.log(price);
+    console.log(comparison);
+
+    try {
+        const filteredExperiences = await filterBudget(price, comparison);
+        console.log(filteredExperiences);
+        displayFilteredExperiences(filteredExperiences);
+        alert('Experiences Filtered');
+    } catch (error) {
+        alert('Problem with filtering');
+    }
+}
+
+//Purpose: Sends GET request, returns experiences filtered
+async function filterBudget(price, comparison) {
+    const response = await fetch('/filter-experiences', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ price: price,  comparison: comparison})
+    })
+
+    if (!response.ok) {
+        throw new Error();
+    }
+    const filteredData = await response.json();
+
+    return filteredData.filteredExperiences;
+}
+
+//Purpose: Display experiences on UI
+//TODO: Complete
+async function displayFilteredExperiences(filteredExperiences) {
+    const budgetTable = document.getElementById('budgettable');
+    const tableBody = budgetTable.querySelector('tbody');
+
+
+    //clear old data before displaying
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    console.log(Array.isArray(filteredExperiences));
+
+    filteredExperiences.forEach(experience => {
+
+        const [experienceID, experienceName, price] = experience;
+
+        //create row
+        const newRow = tableBody.insertRow();
+
+        const nameCell = newRow.insertCell(0);
+        nameCell.textContent = experienceID; 
+
+        const idCell = newRow.insertCell(1);
+        idCell.textContent = experienceName;  
+
+        const priceCell = newRow.insertCell(2);
+        priceCell.textContent = price;
+    })
+}
+
 //Purpose: Executes GET request with PROJECTIONS with selected checkboxes
 async function projectExperiencesCheckbox() {
     const attractionID = document.getElementById("filterAttractionExperience").value;
@@ -468,6 +536,7 @@ window.onload = function () {
     document.getElementById("findAttractions").addEventListener("click", findAndDisplayAttractions);
     document.getElementById("deleteAttractionButton").addEventListener("click", deleteAttraction);
     document.getElementById("projectExperiences").addEventListener("click", projectExperiencesCheckbox);
+    document.getElementById("findBudget").addEventListener("click", findSuitableBudget);
     document.getElementById("findCompletionists").addEventListener("click", findCompletionistAction);
     // document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
     // document.getElementById("countDemotable").addEventListener("click", countDemotable);

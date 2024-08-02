@@ -285,6 +285,40 @@ async function projectExperienceAttributes(id, toSelect) {
     })
 }
 
+
+async function applyPriceFilters(price, comparison) {
+    return await withOracleDB(async (connection) => {
+        let query;
+
+        if (comparison == 'equals') {
+            query =
+                `SELECT experienceID, experienceName, price 
+            FROM ExperienceOffered 
+            WHERE price = :price`;
+        } else if (comparison == 'larger') {
+            query =
+                `SELECT experienceID, experienceName, price 
+            FROM ExperienceOffered 
+            WHERE price >= :price`;
+        } else if (comparison == 'smaller') {
+            query =
+                `SELECT experienceID, experienceName, price 
+            FROM ExperienceOffered 
+            WHERE price <= :price`;
+        }
+
+        try {
+            const result = await connection.execute(
+                query,
+                [price]
+            );
+            return result.rows;
+        } catch (error) {
+            throw error;
+        }
+    })
+}
+
 // Query type satisfied: Division
 async function findCompletionist(attractionID) {
     // First ensure that the attraction exists, otherwise division will result in every user
@@ -324,5 +358,6 @@ module.exports = {
     insertDemotable,
     updateNameDemotable,
     countDemotable,
+    applyPriceFilters,
     findCompletionist
 };
