@@ -268,6 +268,12 @@ async function projectExperienceAttributes(id, toSelect) {
     })
 }
 
+async function applyPriceFilters(price, comparison) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute()
+    })
+}
+
 module.exports = {
     testOracleConnection,
     getAttractions,
@@ -277,5 +283,6 @@ module.exports = {
     fetchDemotableFromDb,
     insertDemotable,
     updateNameDemotable,
-    countDemotable
+    countDemotable,
+    applyPriceFilters
 };

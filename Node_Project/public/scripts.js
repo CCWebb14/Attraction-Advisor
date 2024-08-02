@@ -230,6 +230,46 @@ async function executeDelete(attractionID) {
     }
 }
 
+//Purpose: Execute GET request that fulfills price criteria
+async function findSuitableBudget() {
+    const price = document.getElementById('priceTarget').value;
+    const comparison = document.getElementById('priceTarget');
+
+    console.log(price);
+    console.log(comparison);
+
+    try {
+        const filteredExperiences = filterBudget(price, comparison);
+        displayFilteredExperiences(filteredExperiences);
+        alert('Experiences Filtered');
+    } catch (error) {
+        alert('Problem with filtering');
+    }
+}
+
+//Purpose: Sends GET request, returns experiences filtered
+async function filterBudget(price, comparison) {
+    const response = await fetch('/filter-experiences', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ price: price,  comparison: comparison})
+    })
+
+    if (!response.ok) {
+        throw new Error();
+    }
+
+    return response;
+}
+
+//Purpose: Display experiences on UI
+//TODO: Complete
+async function displayFilteredExperiences(filteredExperiences) {
+    
+}
+
 //Purpose: Executes GET request with PROJECTIONS with selected checkboxes
 async function projectExperiencesCheckbox() {
     const attractionID = document.getElementById("filterAttractionExperience").value;

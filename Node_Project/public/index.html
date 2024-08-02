@@ -33,6 +33,7 @@
             width: 100%;
             table-layout: fixed;
         }
+        
 
     </style>
 
@@ -185,14 +186,22 @@
     <br>
     <hr><br> <!-- ========================================================================= -->
 
-    <h2> Search for Specific Attraction</h2>
-    <button type="button"> View Images</button>
-    <button type="button" id="bookExperience"> Explore & Book Experience </button> <br>
+    <h2> Find Experiences Within Budget Range</h2>
+    <div class="container mt-5">
+        Ideal Price: <input type="number" id="priceTarget" placeholder="Enter Ideal Price">
+        <select id="chooseComparison">
+            <option value="">Select a Price Filter</option>
+            <option value="equals">Equals</option>
+            <option value="smaller">Equivalent or Cheaper</option>
+            <option value="larger">Equivalent or More Expensive</option>
+        </select>
+        <button type="submit" id="findBudget" onclick="findSuitableBudget()">Filter Now</button>
+    </div>
 
     <br>
     <hr><br> <!-- ========================================================================= -->
 
-    <h2> Find and Book Experience </h2>
+    <h2> Find Experiences </h2>
     <div id="experienceFilter">
         <form>
             <div class="form-group">
