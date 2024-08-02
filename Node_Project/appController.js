@@ -95,6 +95,7 @@ router.post("/project-tables", async (req, res) => {
     }
 });
 
+
 router.post("/filter-experiences", async (req, res) => {
     const {price, comparison} = req.body;
     console.log(price, comparison); //testing
@@ -110,6 +111,17 @@ router.post("/filter-experiences", async (req, res) => {
         res.status(400).json({ success: false });
     }
 })
+
+router.post("/find-completionists", async (req, res) => {
+    const { attractionID } = req.body;
+    const tableContent = await appService.findCompletionist(attractionID);
+    if (tableContent[0]) {
+        res.status(200).json({ success: true, data: tableContent });
+    } else {
+        res.status(400).json({ success: false });
+    }
+});
+
 
 
 module.exports = router;

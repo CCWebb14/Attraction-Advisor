@@ -396,6 +396,66 @@ async function addExperiencesToDynamicTable(selectedBoxes, responseData) {
     });
 }
 
+//Purpose: Handles search button press
+async function findCompletionistAction() {
+    const attractionID = document.getElementById('completionistAttractionID').value;
+
+    const completionistObject = {
+        attractionID: attractionID
+    }
+
+    try {
+        const completionists = await findCompletionist(completionistObject);
+        displayCompletionistsOnTable(completionists);
+        alert('Completionist were successfuly discovered.');
+    } catch (error) {
+        alert('findCompletionist has returned unsuccessfuly.')
+    }
+}
+
+//Purpose: Executes POST request to backend to fetch
+async function findCompletionist(completionistObject) {
+    const response = await fetch("/find-completionists", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(completionistObject)
+    })
+
+    if (!response.ok) {
+        throw new Error();
+    }
+
+    const parsedValue = await response.json();
+    return parsedValue.data;
+}
+
+//Inputs required: user table rows
+//Purpose: Displays user data in the main page by adding each object into a row
+async function displayCompletionistsOnTable(completionists) {
+    const attractionTable = document.getElementById('attractionCompletionistResultsTable');
+    const tableBody = attractionTable.querySelector('tbody');
+
+    //clear old data before displaying
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    completionists.forEach(completionist => {
+        // Destructuring assignment of completionist object
+        const [userID, userName] = completionist;
+
+        const newRow = tableBody.insertRow();
+
+        const idCell = newRow.insertCell(0);
+        idCell.textContent = userID;
+
+        const usernameCell = newRow.insertCell(1);
+        usernameCell.textContent = userName;
+    })
+}
+
 // Updates names in the demotable.
 // async function updateNameDemotable(event) {
 //     event.preventDefault();
@@ -477,6 +537,7 @@ window.onload = function () {
     document.getElementById("deleteAttractionButton").addEventListener("click", deleteAttraction);
     document.getElementById("projectExperiences").addEventListener("click", projectExperiencesCheckbox);
     document.getElementById("findBudget").addEventListener("click", findSuitableBudget);
+    document.getElementById("findCompletionists").addEventListener("click", findCompletionistAction);
     // document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
     // document.getElementById("countDemotable").addEventListener("click", countDemotable);
 };
