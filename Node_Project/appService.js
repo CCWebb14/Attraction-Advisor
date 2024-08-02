@@ -291,18 +291,18 @@ async function applyPriceFilters(price, comparison) {
         let query;
 
         if (comparison == 'equals') {
-            query = 
-            `SELECT experienceID, experienceName, price 
+            query =
+                `SELECT experienceID, experienceName, price 
             FROM ExperienceOffered 
             WHERE price = :price`;
         } else if (comparison == 'larger') {
-            query = 
-            `SELECT experienceID, experienceName, price 
+            query =
+                `SELECT experienceID, experienceName, price 
             FROM ExperienceOffered 
             WHERE price >= :price`;
         } else if (comparison == 'smaller') {
-            query = 
-            `SELECT experienceID, experienceName, price 
+            query =
+                `SELECT experienceID, experienceName, price 
             FROM ExperienceOffered 
             WHERE price <= :price`;
         }
@@ -316,6 +316,8 @@ async function applyPriceFilters(price, comparison) {
         } catch (error) {
             throw error;
         }
+    })
+}
 
 // Query type satisfied: Division
 async function findCompletionist(attractionID) {
