@@ -260,7 +260,7 @@ async function projectExperiencesCheckbox() {
     try {
         const responseData = await fetchProjectionExperiences(experienceJSON);
         console.log(responseData); //testing
-        //addExperiencesToDynamicTable(selectedBoxes, responseData);
+        addExperiencesToDynamicTable(selectedBoxes, responseData);
     } catch (error) {
         alert("Not filtered properly");
     }
@@ -285,8 +285,8 @@ async function fetchProjectionExperiences(experienceJSON) {
     return response.json();
 }
 
+// Inputs: array[selectedboxes], array[responseData]
 //Purpose: adds data to table dynamically
-// TODO: COMPLETE LATER
 async function addExperiencesToDynamicTable(selectedBoxes, responseData) {
 
     const experienceHeader = document.getElementById("experienceHeader");
@@ -298,16 +298,35 @@ async function addExperiencesToDynamicTable(selectedBoxes, responseData) {
     const headRow = document.createElement('tr');
     selectedBoxes.forEach(boxOption => {
         const headerCell = document.createElement('th');
-        headerCell.textContent = boxOption;
+        let newText;
+        if (boxOption == 'experienceID') {
+            newText = 'Experience ID'
+        } else if (boxOption == 'experienceName') {
+            newText = 'Experience Name'
+        } else if (boxOption == 'experienceDesc') {
+            newText = 'Experience Description'
+        } else if (boxOption == 'company') {
+            newText = 'Host Company'
+        } else if (boxOption == 'price') {
+            newText = 'Experience Price'
+        }
+        headerCell.textContent = newText;
         headRow.appendChild(headerCell);
-    })
+    });
     experienceHeader.appendChild(headRow);
 
-    // responseData.forEach((data) => {
-    //     const row = document.createElement('tr');
+    const experiences = responseData.projectedExperiences;
 
-    // })
+    experiences.forEach((experience) => {
+        const row = document.createElement('tr');
 
+        for (i = 0; i < selectedBoxes.length; i++) {
+            const cell = document.createElement('td');
+            cell.textContent = experience[i];
+            row.appendChild(cell);
+        }
+        experienceBody.appendChild(row);
+    });
 }
 
 // Updates names in the demotable.
