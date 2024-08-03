@@ -6,6 +6,39 @@ function retrieveAndSanitizeText(elementID) {
     return document.getElementById(elementID).value.toLowerCase();
 }
 
+async function countAttractions() {
+    const province = retrieveAndSanitizeText('provinceInput');
+    const city = retrieveAndSanitizeText('cityInput');
+
+    if (!province || !city) {
+        alert("Please enter both province and city.");
+        return;
+    }
+
+    try {
+        const response = await fetch('/count-attractions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ province: province, city: city })
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok.');
+        }
+
+        const data = await response.json();
+        if (data.success) {
+            alert(`There are ${data.count} attractions in ${city}, ${province}.`);
+        } else {
+            alert("Failed to count attractions.");
+        }
+    } catch (error) {
+        alert("Error counting attractions: " + error.message);
+    }
+}
+
 
 //Purpose: retrieves values from html file, triggers get method, then triggers display method
 async function findAndDisplayAttractions() {
@@ -146,6 +179,65 @@ async function repopulatedata() {
     displayAttractionsOnTable(responseJson); //HELPER FUNCTION ALREADY DEFINED
     alert("Data repopulated!");
 }
+
+async function countAttractionsHaving() {
+    const province = document.getElementById('provinceInput').value;
+    const city = document.getElementById('cityInput').value;
+    const minCount = 2;  // You can change this value or get it from user input if needed
+
+    if (!province || !city) {
+        alert("Please enter both province and city.");
+        return;
+    }
+
+    try {
+        const response = await fetch('/count-attractions-having', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ province: province, city: city, minCount: minCount })
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok.');
+        }
+
+        const data = await response.json();
+        if (data.success) {
+            alert(`Cities with more than ${minCount} attractions: ${JSON.stringify(data.data)}`);
+        } else {
+            alert("Failed to count attractions with HAVING clause.");
+        }
+    } catch (error) {
+        alert("Error counting attractions with HAVING clause: " + error.message);
+    }
+}
+
+async function getAvgAttractionsPerProvince() {
+    try {
+        const response = await fetch('/avg-attractions-per-province', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok.');
+        }
+
+        const data = await response.json();
+        if (data.success) {
+            alert(`Average attractions per province: ${JSON.stringify(data.data)}`);
+        } else {
+            alert("Failed to get average attractions per province.");
+        }
+    } catch (error) {
+        alert("Error getting average attractions per province: " + error.message);
+    }
+}
+
 
 //Purpose: Counts number of tuples
 async function countAttractions() {
@@ -538,6 +630,9 @@ window.onload = function () {
     document.getElementById("projectExperiences").addEventListener("click", projectExperiencesCheckbox);
     document.getElementById("findBudget").addEventListener("click", findSuitableBudget);
     document.getElementById("findCompletionists").addEventListener("click", findCompletionistAction);
+    document.getElementById("countResults").addEventListener("click", countAttractions);
+    document.getElementById("countResultsHaving").addEventListener("click", countAttractionsHaving);
+    document.getElementById("avgAttractionsPerProvince").addEventListener("click", getAvgAttractionsPerProvince);
     // document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
     // document.getElementById("countDemotable").addEventListener("click", countDemotable);
 };

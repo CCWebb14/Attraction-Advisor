@@ -38,6 +38,19 @@ router.delete('/delete-attraction', async (req, res) => {
     }
 })
 
+router.get('/avg-attractions-per-province', async (req, res) => {
+    try {
+        const result = await appService.getAvgAttractionsPerProvince();
+        if (result !== null && result !== undefined) {
+            res.json({ success: true, data: result });
+        } else {
+            res.status(500).json({ success: false, error: 'Failed to get average attractions per province' });
+        }
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
 
 router.get('/demotable', async (req, res) => {
     const tableContent = await appService.fetchDemotableFromDb();
@@ -76,6 +89,28 @@ router.get('/count-demotable', async (req, res) => {
             success: false,
             count: tableCount
         });
+    }
+});
+
+router.post('/count-attractions', async (req, res) => {
+    const { province, city } = req.body;
+
+    const count = await appService.countAttractionsByCityAndProvince(province, city);
+    if (count !== null && count !== undefined) {
+        res.json({ success: true, count: count });
+    } else {
+        res.status(500).json({ success: false, error: 'Failed to count attractions' });
+    }
+});
+
+router.post('/count-attractions-having', async (req, res) => {
+    const { province, city, minCount } = req.body;
+
+    const result = await appService.countAttractionsHaving(province, city, minCount);
+    if (result !== null && result !== undefined) {
+        res.json({ success: true, data: result });
+    } else {
+        res.status(500).json({ success: false, error: 'Failed to count attractions with HAVING clause' });
     }
 });
 
