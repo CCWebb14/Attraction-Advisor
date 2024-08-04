@@ -133,17 +133,17 @@ router.post("/project-tables", async (req, res) => {
 
 
 router.post("/filter-experiences", async (req, res) => {
-    const {price, comparison} = req.body;
+    const { price, comparison } = req.body;
     console.log(price, comparison); //testing
     try {
         const filteredExperiences = await appService.applyPriceFilters(price, comparison);
 
         if (filteredExperiences) {
-            res.json({filteredExperiences});
+            res.json({ filteredExperiences });
         } else {
             res.status(400).json({ success: false });
         }
-    } catch (error){
+    } catch (error) {
         res.status(400).json({ success: false });
     }
 })

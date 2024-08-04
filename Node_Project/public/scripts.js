@@ -361,7 +361,7 @@ async function filterBudget(price, comparison) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ price: price,  comparison: comparison})
+        body: JSON.stringify({ price: price, comparison: comparison })
     })
 
     if (!response.ok) {
@@ -394,10 +394,10 @@ async function displayFilteredExperiences(filteredExperiences) {
         const newRow = tableBody.insertRow();
 
         const nameCell = newRow.insertCell(0);
-        nameCell.textContent = experienceID; 
+        nameCell.textContent = experienceID;
 
         const idCell = newRow.insertCell(1);
-        idCell.textContent = experienceName;  
+        idCell.textContent = experienceName;
 
         const priceCell = newRow.insertCell(2);
         priceCell.textContent = price;
