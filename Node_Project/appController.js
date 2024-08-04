@@ -105,14 +105,11 @@ router.post('/count-attractions', async (req, res) => {
 });
 
 router.post('/count-attractions-having', async (req, res) => {
-    const { province, city, minCount } = req.body;
 
-    const result = await appService.countAttractionsHaving(province, city, minCount);
-    if (result !== null && result !== undefined) {
-        res.json({ success: true, data: result });
-    } else {
-        res.status(500).json({ success: false, error: 'Failed to count attractions with HAVING clause' });
-    }
+    const result = await appService.countAttractionsHaving();
+    console.log(result);
+    res.json(result);
+    
 });
 
 router.post("/project-tables", async (req, res) => {

@@ -181,14 +181,6 @@ async function repopulatedata() {
 }
 
 async function countAttractionsHaving() {
-    const province = document.getElementById('provinceInput').value;
-    const city = document.getElementById('cityInput').value;
-    const minCount = 2;  // You can change this value or get it from user input if needed
-
-    if (!province || !city) {
-        alert("Please enter both province and city.");
-        return;
-    }
 
     try {
         const response = await fetch('/count-attractions-having', {
@@ -196,7 +188,6 @@ async function countAttractionsHaving() {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ province: province, city: city, minCount: minCount })
         });
 
         if (!response.ok) {
@@ -204,15 +195,36 @@ async function countAttractionsHaving() {
         }
 
         const data = await response.json();
-        if (data.success) {
-            alert(`Cities with more than ${minCount} attractions: ${JSON.stringify(data.data)}`);
-        } else {
-            alert("Failed to count attractions with HAVING clause.");
-        }
+        displayProvinceCityTable(data);
     } catch (error) {
         alert("Error counting attractions with HAVING clause: " + error.message);
     }
 }
+
+async function displayProvinceCityTable(provinceCity) {
+    const countResultsTable = document.getElementById('countResultsHavingTable');
+    const tableBody = countResultsTable.querySelector('tbody');
+
+    //clear old data before displaying
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    provinceCity.forEach(pc=> {
+        // Destructuring assignment of attraction JSON
+        const [province, city] = pc;
+
+        //create row
+        const newRow = tableBody.insertRow();
+
+        const provinceCell = newRow.insertCell(0);
+        provinceCell.textContent = province; // TODO: NOTE THIS IS JUST A PLACEHOLDER, CHANGE LATER OTHERWISE THERE WILL BE BUGS
+
+        const cityCell = newRow.insertCell(1);
+        cityCell.textContent = city;  // TODO: NOTE THIS IS JUST A PLACEHOLDER, CHANGE LATER OTHERWISE THERE WILL BE BUGS
+    })
+}
+
 
 async function getAvgAttractionsPerProvince() {
     try {
@@ -255,7 +267,7 @@ async function countAttractions() {
             city: cityInput
         })
     })
-    console.log(response);
+
     if (!response.ok) {
         alert("Count not completed");
         return;

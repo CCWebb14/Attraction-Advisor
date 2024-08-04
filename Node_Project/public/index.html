@@ -10,7 +10,8 @@
     <style>
         #attractionresultstable,
         #experienceprojectable,
-        #budgettable {
+        #budgettable,
+        #countResultsHavingTable {
             min-height: 200px;
             max-height: 200px;
             overflow-y: auto;
@@ -78,7 +79,6 @@
         <button id="findAttractions" type="submit" class="btn btn-primary">Find Attractions Now!</button>
 
         <br>
-        <hr><br> <!-- ========================================================================= -->
 
         <h2>Results</h2>
         <div id="attractionresultstable">
@@ -94,9 +94,24 @@
             </table>
         </div>
 
-        <button id="resetDemotable" onclick="repopulatedata()"> Repopulate data</button> <br>
         <button id="countResults" onclick="countAttractions()">Count attractions</button> <br>
-        <button id="countResultsHaving" onclick="countAttractionsHaving()">Count attractions with HAVING</button> <br>
+
+        <hr><br> <!-- ========================================================================= -->
+        <button id="countResultsHaving" onclick="countAttractionsHaving()">Present Provinces/Cities HAVING >2 Attractions</button> <br>
+
+        <div id="countResultsHavingTable">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Province</th>
+                        <th>City</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
         <button id="avgAttractionsPerProvince" onclick="getAvgAttractionsPerProvince()">Average attractions per province</button>
 
 
