@@ -96,6 +96,7 @@ router.post('/count-attractions', async (req, res) => {
     const { province, city } = req.body;
 
     const count = await appService.countAttractionsByCityAndProvince(province, city);
+    console.log(count);
     if (count !== null && count !== undefined) {
         res.json({ success: true, count: count });
     } else {

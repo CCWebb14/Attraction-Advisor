@@ -296,7 +296,8 @@ async function projectExperienceAttributes(id, toSelect) {
 }
 
 async function countAttractionsByCityAndProvince(province, city) {
-    const query = `
+    return await withOracleDB(async (connection) => {
+        const query = `
         SELECT COUNT(*) AS attractionCount
         FROM attractions
         WHERE province = :province AND city = :city
@@ -304,47 +305,58 @@ async function countAttractionsByCityAndProvince(province, city) {
     `;
     const binds = { province: province, city: city };
 
-    const result = await database.execute(query, binds);
-    return result.rows[0].attractionCount;
+    try {
+        const result = await connection.execute(query, binds);
+        console.log(result.rows[0].attractionCount);
+        return result.rows[0].attractionCount;
+    } catch (error) {
+        console.error("Count not completed");
+        return null;
+    }
+    });
 }
 
 async function countAttractionsHaving(province, city, minCount) {
-    try {
+    return await withOracleDB(async (connection) => {
         const query = `
-            SELECT city, province, COUNT(*) AS attractionCount
-            FROM attractions
-            WHERE province = :province AND city = :city
-            GROUP BY city, province
-            HAVING COUNT(*) > :minCount;
-        `;
-        const binds = { province: province, city: city, minCount: minCount };
+        SELECT city, province, COUNT(*) AS attractionCount
+        FROM attractions
+        WHERE province = :province AND city = :city
+        GROUP BY city, province
+        HAVING COUNT(*) > :minCount;
+    `;
+    const binds = { province: province, city: city, minCount: minCount };
 
-        const result = await database.execute(query, binds);
+    try {
+        const result = await connection.execute(query, binds);
         return result.rows;
     } catch (error) {
         console.error('Error counting attractions with HAVING clause:', error);
         return null;
     }
+    })
 }
 
 async function getAvgAttractionsPerProvince() {
-    try {
+    return await withOracleDB(async (connection) => {
         const query = `
-            SELECT province, AVG(attractionCount) AS avgAttractionCount
-            FROM (
-                SELECT province, COUNT(*) AS attractionCount
-                FROM attractions
-                GROUP BY province
-            )
-            GROUP BY province;
-        `;
+        SELECT province, AVG(attractionCount) AS avgAttractionCount
+        FROM (
+            SELECT province, COUNT(*) AS attractionCount
+            FROM attractions
+            GROUP BY province
+        )
+        GROUP BY province;
+    `;
 
-        const result = await database.execute(query);
+    try {
+        const result = await connection.execute(query);
         return result.rows;
     } catch (error) {
         console.error('Error getting average attractions per province:', error);
         return null;
     }
+    })
 }
 
 async function applyPriceFilters(price, comparison) {

@@ -241,15 +241,29 @@ async function getAvgAttractionsPerProvince() {
 
 //Purpose: Counts number of tuples
 async function countAttractions() {
-    const response = fetch("XYZ");
 
+    const provinceInput = document.getElementById('provinceInput').value;
+    const cityInput = document.getElementById('cityInput').value;
+
+    const response = await fetch('/count-attractions', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            province: provinceInput,
+            city: cityInput
+        })
+    })
+    console.log(response);
     if (!response.ok) {
         alert("Count not completed");
+        return;
     }
 
-    const responseData = response.json();
+    const responseData = await response.json();
 
-    alert(`Theres currently ${responseData} number of attractions`);
+    alert(`Theres currently ${responseData.count} number of attractions`);
 }
 
 //Purpose: Handles update button press
