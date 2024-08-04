@@ -96,6 +96,7 @@ router.post('/count-attractions', async (req, res) => {
     const { province, city } = req.body;
 
     const count = await appService.countAttractionsByCityAndProvince(province, city);
+    console.log(count);
     if (count !== null && count !== undefined) {
         res.json({ success: true, count: count });
     } else {
@@ -104,14 +105,11 @@ router.post('/count-attractions', async (req, res) => {
 });
 
 router.post('/count-attractions-having', async (req, res) => {
-    const { province, city, minCount } = req.body;
 
-    const result = await appService.countAttractionsHaving(province, city, minCount);
-    if (result !== null && result !== undefined) {
-        res.json({ success: true, data: result });
-    } else {
-        res.status(500).json({ success: false, error: 'Failed to count attractions with HAVING clause' });
-    }
+    const result = await appService.countAttractionsHaving();
+    console.log(result);
+    res.json(result);
+    
 });
 
 router.post("/project-tables", async (req, res) => {
@@ -132,17 +130,17 @@ router.post("/project-tables", async (req, res) => {
 
 
 router.post("/filter-experiences", async (req, res) => {
-    const {price, comparison} = req.body;
+    const { price, comparison } = req.body;
     console.log(price, comparison); //testing
     try {
         const filteredExperiences = await appService.applyPriceFilters(price, comparison);
 
         if (filteredExperiences) {
-            res.json({filteredExperiences});
+            res.json({ filteredExperiences });
         } else {
             res.status(400).json({ success: false });
         }
-    } catch (error){
+    } catch (error) {
         res.status(400).json({ success: false });
     }
 })
