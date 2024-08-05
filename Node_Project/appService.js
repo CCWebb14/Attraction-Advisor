@@ -350,15 +350,13 @@ async function countAttractionsHaving() {
 async function getAvgAttractionsPerProvince() {
     return await withOracleDB(async (connection) => {
         const query = `
-        SELECT province, AVG(attractionCount) AS avgAttractionCount
+        SELECT AVG(attractionCount) AS avgAttractionCount
         FROM (
             SELECT province, COUNT(*) AS attractionCount
             FROM TouristAttractions1
             GROUP BY province
         )
-        GROUP BY province;
-    `;
-
+         `;
         try {
             const result = await connection.execute(query);
             return result.rows;
