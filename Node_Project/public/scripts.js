@@ -5,6 +5,20 @@ function retrieveAndSanitizeText(elementID) {
     return document.getElementById(elementID).value.toLowerCase();
 }
 
+function initializeValidation() {
+    'use strict';
+    var forms = document.getElementsByClassName('needs-validation');
+    var validation = Array.prototype.filter.call(forms, function (form) {
+        form.addEventListener('submit', function (event) {
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }, false);
+    });
+}
+
 async function countAttractions() {
     const province = retrieveAndSanitizeText('provinceInput');
     const city = retrieveAndSanitizeText('cityInput');
@@ -597,6 +611,7 @@ async function checkDbConnection() {
 window.onload = function () {
     checkDbConnection();
     fetchTableData();
+    initializeValidation();
     document.getElementById("findAttractions").addEventListener("click", findAndDisplayAttractions);
     document.getElementById("deleteAttractionButton").addEventListener("click", deleteAttraction);
     document.getElementById("projectExperiences").addEventListener("click", projectExperiencesCheckbox);

@@ -68,12 +68,12 @@
 
         <div class="mb-3">
             <input type="text" class="form-control w-50 form-control-sm small-textbox" id="provinceInput"
-                placeholder="Enter Province alpha code (2 letters)">
+                placeholder="Enter Province alpha code (2 letters)" required maxlength="2">
         </div>
 
         <div class="mb-3">
             <input type="text" class="form-control w-50 form-control-sm small-textbox" id="cityInput"
-                placeholder="Enter City Name">
+                placeholder="Enter City Name" required maxlength="20">
         </div>
 
         <button id="findAttractions" type="submit" class="btn btn-primary">Find Attractions Now!</button>
@@ -124,82 +124,95 @@
             <div class="row">
                 <div class="col-md-4">
                     <h2> Update Attraction</h2>
-                    <form id="updateattractiontable">
-                        ID: <input type="text" id="idModify" placeholder="Enter ID to Modify" maxlength="20" required>
-                        <br><br>
-                        New Name: <input type="text" id="newinsertName" placeholder="Enter New Name" maxlength="20"
+                    <form id="updateattractiontable" class="needs-validation" novalidate>
+                        ID: <input type="text" id="idModify" class="form-control" placeholder="Enter ID to Modify"
                             required>
-                        <br><br>
-                        New Description: <input type="text" id="newinsertDescription"
-                            placeholder="Enter New Brief Description" maxlength="20" required>
-                        <br><br>
-                        New Opening Hour: <input type="time" id="newinsertOpen" placeholder="Enter New Opening Hour"
-                            maxlength="20" required> <br><br>
-                        New Closing Hour: <input type="time" id="newinsertClose" placeholder="Enter New Closing Hour"
-                            maxlength="20" required> <br><br>
-                        New Latitude: <input type="number" id="newinsertLat" placeholder="Enter New Latitude" required>
-                        <br><br>
-                        New Longitude: <input type="number" id="newinsertLon" placeholder="Enter New Longitude"
-                            required>
-                        <br><br>
-                        New Province: <input type="string" id="insertNewProv" placeholder="Enter Province" required>
-                        <br><br>
-                        New City: <input type="string" id="insertNewCity" placeholder="Enter City" required>
-                        <br><br>
+                        <br>
+                        New Name: <input type="text" id="newinsertName" class="form-control"
+                            placeholder="Enter New Name" maxlength="50" required>
+                        <br>
+                        New Description: <input type="text" id="newinsertDescription" class="form-control"
+                            placeholder="Enter New Brief Description" maxlength="1000" required>
+                        <br>
+                        New Opening Hour: <input type="time" id="newinsertOpen" class="form-control"
+                            placeholder="Enter New Opening Hour" required> <br>
+                        New Closing Hour: <input type="time" id="newinsertClose" class="form-control"
+                            placeholder="Enter New Closing Hour" required> <br>
+                        New Latitude: <input type="number" id="newinsertLat" class="form-control"
+                            placeholder="Enter New Latitude" step="0.00001" max="90" min="-90" required>
+                        <br>
+                        New Longitude: <input type="number" id="newinsertLon" class="form-control"
+                            placeholder="Enter New Longitude" step="0.0001" max="180" min="-180" required>
+                        <br>
+                        New Province: <input type="string" id="insertNewProv" class="form-control"
+                            placeholder="Enter Province" required maxlength="2">
+                        <br>
+                        New City: <input type="string" id="insertNewCity" class="form-control" placeholder="Enter City"
+                            required maxlength="20">
+                        <br>
                         New Category:
-                        <select id="newchooseCat" required>
-                            <option value="">Select a Category</option>
+                        <select id="newchooseCat" class="form-control" required>
+                            <option value="" disabled selected hidden>Select a Category</option>
                             <option value="Museum">Museum</option>
                             <option value="Park">Park</option>
                             <option value="Historical Site">Historical Site</option>
                             <option value="Restaurant">Restaurant</option>
                             <option value="Theater">Theater</option>
                             <option value="Other">Other</option>
-                        </select>
+                        </select> <br>
+                        <button type="submit" id="updateAttraction" class="btn btn-primary"> Update attraction</button>
                     </form>
-                    <button id="updateAttraction"> Update attraction</button>
                 </div>
 
                 <div class="col-md-4">
                     <h2> Add New Attraction </h2>
-                    <form id="insertattractiontable">
-                        Name: <input type="text" id="insertName" placeholder="Enter Name" maxlength="20" required>
-                        <br><br>
-                        Description: <input type="text" id="insertDescription" placeholder="Enter Brief Description"
-                            maxlength="20" required> <br><br>
-                        Opening Hour: <input type="time" id="insertOpen" placeholder="Enter Opening Hour" maxlength="20"
-                            required> <br><br>
-                        Closing Hour: <input type="time" id="insertClose" placeholder="Enter Closing Hour"
-                            maxlength="20" required> <br><br>
-                        Latitude: <input type="number" id="insertLat" placeholder="0.00000" required> <br><br>
-                        Longitude: <input type="number" id="insertLon" placeholder="0.00000" required> <br><br>
-                        Province: <input type="string" id="insertProv" placeholder="Enter Province" required> <br><br>
-                        City: <input type="string" id="insertCity" placeholder="Enter City" required> <br><br>
+                    <form id="insertattractiontable" class="needs-validation" novalidate>
+                        Name: <input type="text" id="insertName" class="form-control" placeholder="Enter Name"
+                            maxlength="50" required />
+                        <br />
+                        Description: <input type="text" id="insertDescription" class="form-control"
+                            placeholder="Enter Brief Description" maxlength="1000" required> <br>
+                        Opening Hour: <input type="time" id="insertOpen" class="form-control"
+                            placeholder="Enter Opening Hour" required />
+                        <br>
+                        Closing Hour: <input type="time" id="insertClose" class="form-control"
+                            placeholder="Enter Closing Hour" required />
+                        <br>
+                        Latitude: <input type="number" id="insertLat" class="form-control" placeholder="Enter Latitude"
+                            step="0.00001" max="90" min="-90" required /> <br>
+                        Longitude: <input type="number" id="insertLon" class="form-control"
+                            placeholder="Enter Longitude" step="0.0001" max="180" min="-180" required /> <br>
+                        Province: <input type="string" id="insertProv" class="form-control" placeholder="Enter Province"
+                            required maxlength="2" /> <br>
+                        City: <input type="string" id="insertCity" class="form-control" placeholder="Enter City"
+                            required maxlength="20">
+                        <br>
 
 
                         Category:
-                        <select id="chooseCat">
-                            <option value="">Select a Category</option>
+                        <select id="chooseCat" class="form-control" required>
+                            <option value="" disabled selected hidden>Select a Category</option>
                             <option value="Museum">Museum</option>
                             <option value="Park">Park</option>
                             <option value="Historical Site">Historical Site</option>
                             <option value="Restaurant">Restaurant</option>
                             <option value="Theater">Theater</option>
                             <option value="Other">Other</option>
-                        </select>
+                        </select> <br>
+                        <button type="submit" id="newAttractionSubmit" class="btn btn-primary"> Add now!
+                        </button>
                     </form>
-                    <button type="submit" id="newAttractionSubmit"> Add now!
-                    </button>
                     <br>
                 </div>
 
                 <div class="col-md-4">
                     <h2> Delete Attraction</h2>
-                    <form id="deleteattractiontable">
-                        ID: <input type="text" id="idToDelete" placeholder="Enter Attraction to Delete" maxlength="20"
-                            required> <br><br>
+                    <form id="deleteattractiontable" class="needs-validation" novalidate>
+                        ID: <input type="text" id="idToDelete" class="form-control"
+                            placeholder="Enter Attraction to Delete" required>
+                        <br>
+                        <button type="submit" id="deleteAttractionButton" class="btn btn-primary"> Delete Now! </button>
                     </form>
-                    <button type="button" id="deleteAttractionButton"> Delete Now! </button> <br>
                 </div>
             </div>
         </div>
