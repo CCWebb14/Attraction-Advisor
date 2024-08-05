@@ -202,6 +202,99 @@ async function addLocation(province, city) {
     })
 }
 
+// Update attraction
+// first determine origianl lat and long
+// update T2 with new lat and long if possible
+// update T1 with new lat and long
+// potentially update T2 with lat and long if it didnt work before
+
+async function updateAttraction(attractionID, name, description, open, close, lat, long, category, province, city) {
+    console.log(attractionID, name, description, open, close, lat, long, category, province, city);
+    const { oldLatitude, oldLongitude } = await determineLatLong(attractionID);
+    if (!(await checkLocation(province, city))) {
+        await addLocation(province, city);
+    }
+    const result1 = await nullifyT2(attractionID);
+    const result2 = await updateT1(oldLatitude, oldLongitude, lat, long, province, city);
+    const result3 = await updateT2(attractionID, name, description, open, close, lat, long, category);
+    return true;
+}
+
+async function determineLatLong(attractionID) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT latitude, longitude
+            FROM TouristAttractions1 T1
+            WHERE EXISTS (
+                SELECT 1
+                FROM TouristAttractions2 T2
+                WHERE T1.latitude = T2.latitude 
+                AND T1.longitude = T2.longitude 
+                AND T2.attractionID = :attractionID
+            )
+            `,
+            [attractionID]
+        );
+        console.log(result.rows);
+        const [oldLatitude, oldLongitude] = result.rows[0];
+        return { oldLatitude, oldLongitude };
+    }).catch((err) => {
+        throw new Error();
+    })
+}
+
+async function nullifyT2(attractionID) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `UPDATE TouristAttractions2
+            SET latitude = NULL, longitude = NULL
+            WHERE attractionID = :attractionID
+            `,
+            [attractionID],
+            { autoCommit: true }
+        );
+        console.log(result);
+        return (result.rowsAffected && result.rowsAffected > 0);
+    }).catch((err) => {
+        return false;
+    })
+}
+
+async function updateT1(oldLatitude, oldLongitude, lat, long, province, city) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `UPDATE TouristAttractions1
+            SET latitude = :new_latitude, longitude = :new_longitude, province = :province, city = :city 
+            WHERE latitude = :current_latitude AND longitude = :current_latitude
+            `,
+            [lat, long, province, city, oldLatitude, oldLongitude],
+            { autoCommit: true }
+        );
+        console.log(result);
+        return (result.rowsAffected && result.rowsAffected > 0);
+    }).catch((err) => {
+        return false;
+    })
+}
+
+async function updateT2(attractionID, name, description, open, close, latitude, longitude, category) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `UPDATE TouristAttractions2
+            SET attractionName = :name, attractionDesc = :description, openingHour = :open, closingHour = :close, 
+            latitude = :latitude, longitude = :longitude, category = :category
+            WHERE attractionID = :attractionID
+            `,
+            [name, description, open, close, latitude, longitude, category, attractionID],
+            { autoCommit: true }
+        );
+        console.log(result);
+        return (result.rowsAffected && result.rowsAffected > 0);
+    }).catch((err) => {
+        return false;
+    })
+}
+
 async function deleteAttraction(attractionID) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
@@ -222,9 +315,6 @@ async function deleteAttraction(attractionID) {
         return false;
     })
 }
-
-
-
 
 async function fetchDemotableFromDb() {
     return await withOracleDB(async (connection) => {
@@ -320,27 +410,6 @@ async function countAttractionsByCityAndProvince(province, city) {
         return [];
     })
 }
-
-// async function countAttractionsHaving(province, city, minCount) {
-//     return await withOracleDB(async (connection) => {
-//         const query = `
-//         SELECT city, province, COUNT(*) AS attractionCount
-//         FROM attractions
-//         WHERE province = :province AND city = :city
-//         GROUP BY city, province
-//         HAVING COUNT(*) > :minCount;
-//     `;
-//         const binds = { province: province, city: city, minCount: minCount };
-
-//         try {
-//             const result = await connection.execute(query, binds);
-//             return result.rows;
-//         } catch (error) {
-//             console.error('Error counting attractions with HAVING clause:', error);
-//             return null;
-//         }
-//     })
-// }
 
 async function countAttractionsHaving() {
     return await withOracleDB(async (connection) => {
@@ -453,5 +522,6 @@ module.exports = {
     countAttractionsByCityAndProvince,
     countAttractionsHaving,
     getAvgAttractionsPerProvince,
-    findCompletionist
+    findCompletionist,
+    updateAttraction
 };

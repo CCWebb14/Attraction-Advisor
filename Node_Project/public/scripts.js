@@ -210,7 +210,7 @@ async function displayProvinceCityTable(provinceCity) {
         tableBody.innerHTML = '';
     }
 
-    provinceCity.forEach(pc=> {
+    provinceCity.forEach(pc => {
         // Destructuring assignment of attraction JSON
         const [province, city] = pc;
 
@@ -280,28 +280,33 @@ async function countAttractions() {
 
 //Purpose: Handles update button press
 async function updateAttractionAction() {
-    const activityId = document.getElementById('idModify').value;
-    const newname = document.getElementById('newinsertName').value;
-    const newlat = document.getElementById('newinsertLat').value;
-    const newlong = document.getElementById('newinsertLon').value;
-    const newopen = document.getElementById('newinsertOpen').value;
-    const newclose = document.getElementById('newinsertClose').value;
-    const newdescription = document.getElementById('newinsertDescription').value;
-    const newcategory = document.getElementById('newchooseCat').value;
+    const attractionID = document.getElementById('idModify').value;
+    const name = retrieveAndSanitizeText('newinsertName');
+    const description = retrieveAndSanitizeText('newinsertDescription');
+    const open = retrieveAndSanitizeText('newinsertOpen');
+    const close = retrieveAndSanitizeText('newinsertClose');
+    const lat = document.getElementById('newinsertLat').value;
+    const long = document.getElementById('newinsertLon').value;
+    const category = retrieveAndSanitizeText('newchooseCat');
+    const province = retrieveAndSanitizeText('insertNewProv');
+    const city = retrieveAndSanitizeText('insertNewCity');
+
+    console.log(attractionID);
 
 
     // TODO: ensure that these json values are good
     const attractionJson = {
-        id: activityId,
-        newname: newname,
-        newlat: newlat,
-        newlong: newlong,
-        newopen: newopen,
-        newclose: newclose,
-        newdescription: newdescription,
-        newcategory: newcategory
+        attractionID: attractionID,
+        name: name,
+        description: description,
+        open: open,
+        close: close,
+        lat: lat,
+        long: long,
+        category: category,
+        province: province,
+        city: city
     }
-
     try {
         updateDbAttraction(attractionJson);
         alert('Attraction info successfully updated');
@@ -313,12 +318,17 @@ async function updateAttractionAction() {
 //Purpose: Executes PUT request to backend to update
 // TODO: COMPLETE THIS METHOD
 async function updateDbAttraction(attractionJson) {
-    const response = await fetch("XYZ", {
+    const response = await fetch("/update-attraction", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
+        body: JSON.stringify(attractionJson)
     })
+
+    if (!response.ok) {
+        throw new Error();
+    }
 }
 
 //Purpose: Obtains ID to delete and sends DELETE request
@@ -659,6 +669,7 @@ window.onload = function () {
     document.getElementById("countResults").addEventListener("click", countAttractions);
     document.getElementById("countResultsHaving").addEventListener("click", countAttractionsHaving);
     document.getElementById("avgAttractionsPerProvince").addEventListener("click", getAvgAttractionsPerProvince);
+    document.getElementById("updateAttraction").addEventListener("click", updateAttractionAction);
     // document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
     // document.getElementById("countDemotable").addEventListener("click", countDemotable);
 };
