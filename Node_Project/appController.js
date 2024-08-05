@@ -17,7 +17,6 @@ router.get('/check-db-connection', async (req, res) => {
 
 router.post('/get-attractions', async (req, res) => {
     const { province, city } = req.body;
-    console.log(province, city)
     const tableContent = await appService.getAttractions(province, city);
     res.json({ data: tableContent });
 });
@@ -40,7 +39,6 @@ router.delete('/delete-attraction', async (req, res) => {
 
 router.post('/update-attraction', async (req, res) => {
     const { attractionID, name, description, open, close, lat, long, category, province, city } = req.body;
-    console.log(attractionID, name, description, open, close, lat, long, category, province, city);
     const tableContent = await appService.updateAttraction(attractionID, name, description, open, close, lat, long, category, province, city);
     res.json({ data: tableContent });
 })
@@ -62,7 +60,6 @@ router.post('/count-attractions', async (req, res) => {
     const { province, city } = req.body;
 
     const count = await appService.countAttractionsByCityAndProvince(province, city);
-    console.log(count);
     if (count !== null && count !== undefined) {
         res.json({ success: true, count: count });
     } else {
@@ -73,14 +70,12 @@ router.post('/count-attractions', async (req, res) => {
 router.post('/count-attractions-having', async (req, res) => {
 
     const result = await appService.countAttractionsHaving();
-    console.log(result);
     res.json(result);
 
 });
 
 router.post("/project-tables", async (req, res) => {
     const { attractionID, selectedBoxes } = req.body;
-    console.log(attractionID, selectedBoxes); // testing
     try {
         const projectedExperiences = await appService.projectExperienceAttributes(attractionID, selectedBoxes);
 
@@ -97,7 +92,6 @@ router.post("/project-tables", async (req, res) => {
 
 router.post("/filter-experiences", async (req, res) => {
     const { price, comparison } = req.body;
-    console.log(price, comparison); //testing
     try {
         const filteredExperiences = await appService.applyPriceFilters(price, comparison);
 

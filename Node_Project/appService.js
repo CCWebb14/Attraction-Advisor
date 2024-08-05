@@ -108,7 +108,6 @@ async function addAttraction(name, description, open, close, lat, long, category
         );
         return result.rowsAffected && result.rowsAffected > 0;
     }).catch((err) => {
-        console.log(err);
         return false;
     })
 }
@@ -123,10 +122,8 @@ async function checkTouristAttraction1(lat, long, province, city) {
             province = :province AND city = :city`,
             [lat, long, province, city]
         );
-        console.log(result.rows.length > 0);
         return (result.rows.length > 0);
     }).catch((err) => {
-        console.log(err);
         return false;
     })
 }
@@ -140,10 +137,8 @@ async function checkTouristAttraction2(attractionID) {
             WHERE attractionID = :id`,
             [attractionID]
         );
-        console.log(result.rows.length > 0);
         return (result.rows.length > 0);
     }).catch((err) => {
-        console.log(err);
         return false;
     })
 }
@@ -163,7 +158,6 @@ async function addTouristAttractions1(lat, long, province, city) {
         );
         return result.rowsAffected && result.rowsAffected > 0;
     }).catch((err) => {
-        console.log(err);
         return false;
     })
 }
@@ -177,10 +171,8 @@ async function checkLocation(province, city) {
             WHERE province = :province AND city = :city`,
             [province, city]
         );
-        console.log(result.rows.length > 0);
         return (result.rows.length > 0);
     }).catch((err) => {
-        console.log(err);
         return false;
     })
 }
@@ -195,7 +187,6 @@ async function addLocation(province, city) {
         );
         return result.rowsAffected && result.rowsAffected > 0;
     }).catch((err) => {
-        console.log(err);
         return false;
     })
 }
@@ -208,7 +199,6 @@ async function addLocation(province, city) {
 
 // Query type satisfied: UPDATE
 async function updateAttraction(attractionID, name, description, open, close, lat, long, category, province, city) {
-    console.log(attractionID, name, description, open, close, lat, long, category, province, city);
     const { oldLatitude, oldLongitude } = await determineLatLong(attractionID);
     if (!(await checkLocation(province, city))) {
         await addLocation(province, city);
@@ -234,7 +224,6 @@ async function determineLatLong(attractionID) {
             `,
             [attractionID]
         );
-        console.log(result.rows);
         const [oldLatitude, oldLongitude] = result.rows[0];
         return { oldLatitude, oldLongitude };
     }).catch((err) => {
@@ -252,7 +241,6 @@ async function nullifyT2(attractionID) {
             [attractionID],
             { autoCommit: true }
         );
-        console.log(result);
         return (result.rowsAffected && result.rowsAffected > 0);
     }).catch((err) => {
         return false;
@@ -269,7 +257,6 @@ async function updateT1(oldLatitude, oldLongitude, lat, long, province, city) {
             [lat, long, province, city, oldLatitude, oldLongitude],
             { autoCommit: true }
         );
-        console.log(result);
         return (result.rowsAffected && result.rowsAffected > 0);
     }).catch((err) => {
         return false;
@@ -287,7 +274,6 @@ async function updateT2(attractionID, name, description, open, close, latitude, 
             [name, description, open, close, latitude, longitude, category, attractionID],
             { autoCommit: true }
         );
-        console.log(result);
         return (result.rowsAffected && result.rowsAffected > 0);
     }).catch((err) => {
         return false;
@@ -358,7 +344,6 @@ async function countAttractionsByCityAndProvince(province, city) {
             WHERE province = :province AND city = :city`,
             [province, city]
         );
-        console.log(result);
         return result.rows;
     }).catch(() => {
         return [];
@@ -374,7 +359,6 @@ async function countAttractionsHaving() {
             GROUP BY city, province
             HAVING COUNT(*) > 2`
         );
-        console.log(result.rows)
         return result.rows;
     }).catch(() => {
         return [];
@@ -396,7 +380,6 @@ async function getAvgAttractionsPerProvince() {
             const result = await connection.execute(query);
             return result.rows[0][0];
         } catch (error) {
-            console.error('Error getting average attractions per province:', error);
             return null;
         }
     })
@@ -458,7 +441,6 @@ async function findCompletionist(attractionID) {
                     WHERE B.userID = U.userID))`,
             [attractionID]
         );
-        console.log(result);
         return result.rows;
     }).catch(() => {
         return [];

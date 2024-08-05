@@ -135,7 +135,10 @@ async function addNewAttractionSubmit() {
     const province = retrieveAndSanitizeText('insertProv');
     const city = retrieveAndSanitizeText('insertCity');
 
-    // TODO: checking valid inputs, ex 5 decimal places for lat and long
+    if (!name || !description || !open || !close || !lat || !long || !category || !province || !city) {
+        alert("Please enter all required fields");
+        return;
+    }
 
     const attractionJson = {
         name: name,
@@ -173,8 +176,6 @@ async function addAttraction(attraction) {
     if (!response.ok) {
         throw new Error();
     }
-
-    console.log("add successful"); // debugging purposes
 }
 
 async function countAttractionsHaving() {
@@ -288,7 +289,10 @@ async function updateAttractionAction() {
     const province = retrieveAndSanitizeText('insertNewProv');
     const city = retrieveAndSanitizeText('insertNewCity');
 
-    console.log(attractionID);
+    if (!attractionID || !name || !description || !open || !close || !lat || !long || !category || !province || !city) {
+        alert("Please enter all required fields");
+        return;
+    }
 
 
     // TODO: ensure that these json values are good
@@ -332,6 +336,11 @@ async function updateDbAttraction(attractionJson) {
 async function deleteAttraction() {
     const attractionID = document.getElementById('idToDelete').value;
 
+    if (!attractionID) {
+        alert("Please enter an attractionID.");
+        return;
+    }
+
     try {
         await executeDelete(attractionID);
         alert("Attraction deleted!")
@@ -360,12 +369,13 @@ async function findSuitableBudget() {
     const price = document.getElementById('priceTarget').value;
     const comparison = document.getElementById('chooseComparison').value;
 
-    console.log(price);
-    console.log(comparison);
+    if (!price || !comparison) {
+        alert("Please enter an ideal price and a filter");
+        return;
+    }
 
     try {
         const filteredExperiences = await filterBudget(price, comparison);
-        console.log(filteredExperiences);
         displayFilteredExperiences(filteredExperiences);
         alert('Experiences Filtered');
     } catch (error) {
@@ -403,8 +413,6 @@ async function displayFilteredExperiences(filteredExperiences) {
         tableBody.innerHTML = '';
     }
 
-    console.log(Array.isArray(filteredExperiences));
-
     filteredExperiences.forEach(experience => {
 
         const [experienceID, experienceName, price] = experience;
@@ -426,9 +434,14 @@ async function displayFilteredExperiences(filteredExperiences) {
 //Purpose: Executes GET request with PROJECTIONS with selected checkboxes
 async function projectExperiencesCheckbox() {
     const attractionID = document.getElementById("filterAttractionExperience").value;
-    console.log(attractionID);
     const experienceCheckboxes = document.querySelectorAll('#experienceFilter .form-check-input');
     //note selectedBoxes is an array that will be sent for projection 
+
+    if (!attractionID) {
+        alert("Please enter an attractionID");
+        return;
+    }
+
     const selectedBoxes = [];
 
     experienceCheckboxes.forEach(checkbox => {
@@ -437,12 +450,17 @@ async function projectExperiencesCheckbox() {
         }
     });
 
+    if (!selectedBoxes.length) {
+        alert("Please mark at least 1 relevant info box");
+        return;
+    }
+
     const experienceJSON = {
         attractionID: attractionID,
         selectedBoxes: selectedBoxes
     }
 
-    console.log(selectedBoxes);
+
 
     if (experienceCheckboxes.length === 0) {
         alert("Please select at least 1 attribute");
@@ -451,10 +469,10 @@ async function projectExperiencesCheckbox() {
 
     try {
         const responseData = await fetchProjectionExperiences(experienceJSON);
-        console.log(responseData); //testing
+        alert("Experiences successfully filtered.")
         addExperiencesToDynamicTable(selectedBoxes, responseData);
     } catch (error) {
-        alert("Not filtered properly");
+        alert("Not filtered properly.");
     }
 
 }
@@ -524,6 +542,11 @@ async function addExperiencesToDynamicTable(selectedBoxes, responseData) {
 //Purpose: Handles search button press
 async function findCompletionistAction() {
     const attractionID = document.getElementById('completionistAttractionID').value;
+
+    if (!attractionID) {
+        alert("Please enter an attractionID.");
+        return;
+    }
 
     const completionistObject = {
         attractionID: attractionID
