@@ -1,4 +1,3 @@
-
 //Inputs required: elementID of an element that contains text
 //Purpose: sanitize text input from an element
 //Returns: element text converted to lowercase
@@ -103,10 +102,10 @@ async function displayAttractionsOnTable(attractions) {
         const newRow = tableBody.insertRow();
 
         const nameCell = newRow.insertCell(0);
-        nameCell.textContent = attractionName; // TODO: NOTE THIS IS JUST A PLACEHOLDER, CHANGE LATER OTHERWISE THERE WILL BE BUGS
+        nameCell.textContent = attractionName;
 
         const idCell = newRow.insertCell(1);
-        idCell.textContent = attractionID;  // TODO: NOTE THIS IS JUST A PLACEHOLDER, CHANGE LATER OTHERWISE THERE WILL BE BUGS
+        idCell.textContent = attractionID;
     })
 }
 
@@ -162,22 +161,6 @@ async function addAttraction(attraction) {
     }
 
     console.log("add successful"); // debugging purposes
-}
-
-
-//Purpose: Fetch,Repopulate, and display table with .sql file data
-async function repopulatedata() {
-
-    //TODO: add path to route for default data
-    const response = await fetch("/intiate-table");
-
-    if (!response.ok) {
-        alert("Repopulation not completed properly");
-        return;
-    }
-    const responseJson = await response.json();
-    displayAttractionsOnTable(responseJson); //HELPER FUNCTION ALREADY DEFINED
-    alert("Data repopulated!");
 }
 
 async function countAttractionsHaving() {
@@ -275,7 +258,7 @@ async function countAttractions() {
 
     const responseData = await response.json();
 
-    alert(`Theres currently ${responseData.count} number of attractions`);
+    alert(`Theres currently ${responseData.count} attractions`);
 }
 
 //Purpose: Handles update button press
@@ -584,53 +567,6 @@ async function displayCompletionistsOnTable(completionists) {
     })
 }
 
-// Updates names in the demotable.
-// async function updateNameDemotable(event) {
-//     event.preventDefault();
-
-//     const oldNameValue = document.getElementById('updateOldName').value;
-//     const newNameValue = document.getElementById('updateNewName').value;
-
-//     const response = await fetch('/update-name-demotable', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify({
-//             oldName: oldNameValue,
-//             newName: newNameValue
-//         })
-//     });
-
-//     const responseData = await response.json();
-//     const messageElement = document.getElementById('updateNameResultMsg');
-
-//     if (responseData.success) {
-//         messageElement.textContent = "Name updated successfully!";
-//         fetchTableData();
-//     } else {
-//         messageElement.textContent = "Error updating name!";
-//     }
-// }
-
-// // Counts rows in the demotable.
-// // Modify the function accordingly if using different aggregate functions or procedures.
-// async function countDemotable() {
-//     const response = await fetch("/count-demotable", {
-//         method: 'GET'
-//     });
-
-//     const responseData = await response.json();
-//     const messageElement = document.getElementById('countResultMsg');
-
-//     if (responseData.success) {
-//         const tupleCount = responseData.count;
-//         messageElement.textContent = `The number of tuples in demotable: ${tupleCount}`;
-//     } else {
-//         alert("Error in count demotable!");
-//     }
-// }
-
 // TODO: REMOVE. DEV ONLY. 
 // This function checks the database connection and updates its status on the frontend.
 async function checkDbConnection() {
@@ -670,12 +606,11 @@ window.onload = function () {
     document.getElementById("countResultsHaving").addEventListener("click", countAttractionsHaving);
     document.getElementById("avgAttractionsPerProvince").addEventListener("click", getAvgAttractionsPerProvince);
     document.getElementById("updateAttraction").addEventListener("click", updateAttractionAction);
-    // document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
-    // document.getElementById("countDemotable").addEventListener("click", countDemotable);
+    document.getElementById("newAttractionSubmit").addEventListener("click", addNewAttractionSubmit);
 };
 
 // General function to refresh the displayed table data. 
 // You can invoke this after any table-modifying operation to keep consistency.
 function fetchTableData() {
-    // fetchAndDisplayUsers();
+    // TODO: NOT IMPLEMENTED YET
 }

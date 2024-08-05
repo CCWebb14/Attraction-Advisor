@@ -75,7 +75,7 @@ async function testOracleConnection() {
     });
 }
 
-// Query type satisfied: SELECTION
+// Query type satisfied: JOIN
 async function getAttractions(province, city) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
@@ -91,10 +91,8 @@ async function getAttractions(province, city) {
     })
 }
 
+// Query type satisfied: INSERTION
 async function addAttraction(name, description, open, close, lat, long, category, province, city) {
-
-    console.log(name, description, open, close, lat, long, category, province, city);
-
     // First ensure that the foreign key is present in TouristAttractions1 table
     if (!(await checkTouristAttraction1(lat, long, province, city))) {
         await addTouristAttractions1(lat, long, province, city);
@@ -208,6 +206,7 @@ async function addLocation(province, city) {
 // update T1 with new lat and long
 // potentially update T2 with lat and long if it didnt work before
 
+// Query type satisfied: UPDATE
 async function updateAttraction(attractionID, name, description, open, close, lat, long, category, province, city) {
     console.log(attractionID, name, description, open, close, lat, long, category, province, city);
     const { oldLatitude, oldLongitude } = await determineLatLong(attractionID);
@@ -295,6 +294,7 @@ async function updateT2(attractionID, name, description, open, close, latitude, 
     })
 }
 
+// Query type satisfied: DELETE
 async function deleteAttraction(attractionID) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
@@ -314,52 +314,6 @@ async function deleteAttraction(attractionID) {
     }).catch((err) => {
         return false;
     })
-}
-
-async function fetchDemotableFromDb() {
-    return await withOracleDB(async (connection) => {
-        const result = await connection.execute('SELECT * FROM DEMOTABLE');
-        return result.rows;
-    }).catch(() => {
-        return [];
-    });
-}
-
-async function insertDemotable(id, name) {
-    return await withOracleDB(async (connection) => {
-        const result = await connection.execute(
-            `INSERT INTO DEMOTABLE (id, name) VALUES (:id, :name)`,
-            [id, name],
-            { autoCommit: true }
-        );
-
-        return result.rowsAffected && result.rowsAffected > 0;
-    }).catch(() => {
-        return false;
-    });
-}
-
-async function updateNameDemotable(oldName, newName) {
-    return await withOracleDB(async (connection) => {
-        const result = await connection.execute(
-            `UPDATE DEMOTABLE SET name=:newName where name=:oldName`,
-            [newName, oldName],
-            { autoCommit: true }
-        );
-
-        return result.rowsAffected && result.rowsAffected > 0;
-    }).catch(() => {
-        return false;
-    });
-}
-
-async function countDemotable() {
-    return await withOracleDB(async (connection) => {
-        const result = await connection.execute('SELECT Count(*) FROM DEMOTABLE');
-        return result.rows[0][0];
-    }).catch(() => {
-        return -1;
-    });
 }
 
 async function projectExperienceAttributes(id, toSelect) {
@@ -411,6 +365,7 @@ async function countAttractionsByCityAndProvince(province, city) {
     })
 }
 
+// Demo-ing the Query: Aggregation with HAVING
 async function countAttractionsHaving() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
@@ -426,6 +381,7 @@ async function countAttractionsHaving() {
     })
 }
 
+// Demo-ing the Query: Nested Aggregation with GROUP BY
 async function getAvgAttractionsPerProvince() {
     return await withOracleDB(async (connection) => {
         const query = `
@@ -438,7 +394,7 @@ async function getAvgAttractionsPerProvince() {
          `;
         try {
             const result = await connection.execute(query);
-            return result.rows;
+            return result.rows[0][0];
         } catch (error) {
             console.error('Error getting average attractions per province:', error);
             return null;
@@ -446,6 +402,7 @@ async function getAvgAttractionsPerProvince() {
     })
 }
 
+// Query type satisfied: SELECTION
 async function applyPriceFilters(price, comparison) {
     return await withOracleDB(async (connection) => {
         let query;
@@ -479,7 +436,7 @@ async function applyPriceFilters(price, comparison) {
     })
 }
 
-// Query type satisfied: Division
+// Query type satisfied: DIVISION
 async function findCompletionist(attractionID) {
     // First ensure that the attraction exists, otherwise division will result in every user
     const result = await checkTouristAttraction2(attractionID);
@@ -514,10 +471,6 @@ module.exports = {
     addAttraction,
     deleteAttraction,
     projectExperienceAttributes,
-    fetchDemotableFromDb,
-    insertDemotable,
-    updateNameDemotable,
-    countDemotable,
     applyPriceFilters,
     countAttractionsByCityAndProvince,
     countAttractionsHaving,
