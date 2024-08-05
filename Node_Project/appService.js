@@ -205,8 +205,15 @@ async function addLocation(province, city) {
 async function deleteAttraction(attractionID) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `DELETE FROM TouristAttractions2
-            WHERE attractionID = :attractionID`,
+            `DELETE FROM TouristAttractions1 T1
+            WHERE EXISTS (
+                SELECT 1 
+                FROM TouristAttractions2 T2
+                WHERE T1.latitude = T2.latitude 
+                AND T1.longitude = T2.longitude 
+                AND T2.attractionID = :attractionID
+            )
+            `,
             [attractionID],
             { autoCommit: true }
         );
@@ -215,6 +222,9 @@ async function deleteAttraction(attractionID) {
         return false;
     })
 }
+
+
+
 
 async function fetchDemotableFromDb() {
     return await withOracleDB(async (connection) => {
