@@ -200,16 +200,33 @@ async function addLocation(province, city) {
 // Query type satisfied: UPDATE
 async function updateAttraction(attractionID, name, description, open, close, lat, long, category, province, city) {
     const { oldLatitude, oldLongitude } = await determineLatLong(attractionID);
+
+    if (!oldLatitude || !oldLongitude) {
+        return false;
+    }
+
     if (!(await checkLocation(province, city))) {
         await addLocation(province, city);
     }
+
     const result1 = await nullifyT2(attractionID);
+    if (!result1) {
+        return false;
+    }
     const result2 = await updateT1(oldLatitude, oldLongitude, lat, long, province, city);
+    if (!result2) {
+        return false;
+    }
     const result3 = await updateT2(attractionID, name, description, open, close, lat, long, category);
+    if (!result3) {
+        return false;
+    }
+
     return true;
 }
 
 async function determineLatLong(attractionID) {
+    let [oldLatitude, oldLongitude] = [null, null];
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
             `SELECT latitude, longitude
@@ -224,10 +241,12 @@ async function determineLatLong(attractionID) {
             `,
             [attractionID]
         );
-        const [oldLatitude, oldLongitude] = result.rows[0];
+        if (result.rows.length > 0) {
+            [oldLatitude, oldLongitude] = result.rows[0];
+        }
         return { oldLatitude, oldLongitude };
     }).catch((err) => {
-        throw new Error();
+        return { oldLatitude, oldLongitude };
     })
 }
 

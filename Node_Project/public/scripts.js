@@ -10,8 +10,8 @@ function initializeValidation() {
     var forms = document.getElementsByClassName('needs-validation');
     var validation = Array.prototype.filter.call(forms, function (form) {
         form.addEventListener('submit', function (event) {
+            event.preventDefault();
             if (form.checkValidity() === false) {
-                event.preventDefault();
                 event.stopPropagation();
             }
             form.classList.add('was-validated');
@@ -309,7 +309,7 @@ async function updateAttractionAction() {
         city: city
     }
     try {
-        updateDbAttraction(attractionJson);
+        await updateDbAttraction(attractionJson);
         alert('Attraction info successfully updated');
     } catch (error) {
         alert('Attraction failed to update')

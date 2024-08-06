@@ -39,8 +39,12 @@ router.delete('/delete-attraction', async (req, res) => {
 
 router.post('/update-attraction', async (req, res) => {
     const { attractionID, name, description, open, close, lat, long, category, province, city } = req.body;
-    const tableContent = await appService.updateAttraction(attractionID, name, description, open, close, lat, long, category, province, city);
-    res.json({ data: tableContent });
+    const result = await appService.updateAttraction(attractionID, name, description, open, close, lat, long, category, province, city);
+    if (result) {
+        res.status(200).json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
+    }
 })
 
 router.get('/avg-attractions-per-province', async (req, res) => {
