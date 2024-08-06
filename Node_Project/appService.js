@@ -360,7 +360,8 @@ async function countAttractionsByCityAndProvince(province, city) {
         const result = await connection.execute(
             `SELECT COUNT(*) AS attractionCount
             FROM TouristAttractions1
-            WHERE province = :province AND city = :city`,
+            GROUP BY province, city
+            HAVING province = :province AND city = :city`,
             [province, city]
         );
         return result.rows;
