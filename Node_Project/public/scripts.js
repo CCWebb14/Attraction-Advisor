@@ -135,7 +135,7 @@ async function addNewAttractionSubmit() {
     const province = retrieveAndSanitizeText('insertProv');
     const city = retrieveAndSanitizeText('insertCity');
 
-    if (!name || !description || !open || !close || !lat || !long || !category || !province || !city) {
+    if (!name || !description || !lat || !long || !category || !province || !city) {
         alert("Please enter all required fields");
         return;
     }
@@ -289,7 +289,7 @@ async function updateAttractionAction() {
     const province = retrieveAndSanitizeText('insertNewProv');
     const city = retrieveAndSanitizeText('insertNewCity');
 
-    if (!attractionID || !name || !description || !open || !close || !lat || !long || !category || !province || !city) {
+    if (!attractionID || !name || !description || !lat || !long || !category || !province || !city) {
         alert("Please enter all required fields");
         return;
     }
